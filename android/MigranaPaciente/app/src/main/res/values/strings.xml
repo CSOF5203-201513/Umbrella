@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MigranaPaciente</string>
+    <string name="server_api_url">http://10.0.2.2/MigranaRest/</string>
+</resources>
