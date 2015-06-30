@@ -4,7 +4,7 @@ package paciente.android.umbrella.uniandes.edu.co.entities;
  * Created by Gabriel on 27/06/2015.
  */
 public class User {
-    public String Identification;
+    private String Identification;
 
     public String getIdentification() {
         return Identification;
@@ -22,5 +22,15 @@ public class User {
         Password = password;
     }
 
-    public String Password;
+    private String Password;
+
+    private String Name;
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
 }

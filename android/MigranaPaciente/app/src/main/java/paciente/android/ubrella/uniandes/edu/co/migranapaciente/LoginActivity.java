@@ -40,6 +40,7 @@ import java.util.Arrays;
 import java.util.List;
 
 //import paciente.android.umbrella.uniandes.edu.co.aplications.Globals;
+import paciente.android.umbrella.uniandes.edu.co.aplications.MigranaApplication;
 import paciente.android.umbrella.uniandes.edu.co.entities.User;
 
 
@@ -304,8 +305,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
 
             if (authenticatedUser != null) {
-//                Globals gApp = (Globals)getApplication();
-//                gApp.setUsernameAuthenticated(authenticatedUser.getIdentification());
+                MigranaApplication gApp = (MigranaApplication)getApplication();
+                gApp.setAuthenticatedUser(authenticatedUser);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
