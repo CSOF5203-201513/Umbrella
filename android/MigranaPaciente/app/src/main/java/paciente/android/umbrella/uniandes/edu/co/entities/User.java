@@ -4,33 +4,33 @@ package paciente.android.umbrella.uniandes.edu.co.entities;
  * Created by Gabriel on 27/06/2015.
  */
 public class User {
-    private String Identification;
+    private String identification;
 
     public String getIdentification() {
-        return Identification;
+        return identification;
     }
 
     public void setIdentification(String identification) {
-        Identification = identification;
+        this.identification = identification;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
-    private String Password;
+    private String password;
 
-    private String Name;
+    private String name;
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 }

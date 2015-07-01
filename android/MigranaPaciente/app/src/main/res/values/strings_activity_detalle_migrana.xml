@@ -1,0 +1,8 @@
+<resources>
+    <string name="detalleMigrana_lblNombrePaciente">Nombre Paciente</string>
+    <string name="detalleMigrana_lblFecha">Fecha</string>
+    <string name="detalleMigrana_lblLocalizacionDolor">Localización del dolor</string>
+    <string name="detalleMigrana_lblIntensidad">Intensidad</string>
+    <string name="detalleMigrana_btnGuardar">Guardar</string>
+
+</resources>
