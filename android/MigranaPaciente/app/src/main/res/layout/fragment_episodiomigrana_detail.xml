@@ -73,6 +73,15 @@
                 android:layout_column="2" />
 
         </TableRow>
+        <TableRow >
+            <TableLayout android:id="@+id/episodiomigrana_trDesencadenantes"
+                android:layout_span="2"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </TableLayout>
+        </TableRow>
         <TableRow>
             <Button
                 android:layout_width="wrap_content"

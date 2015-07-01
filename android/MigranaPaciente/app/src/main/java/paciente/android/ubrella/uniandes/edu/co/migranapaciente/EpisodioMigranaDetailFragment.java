@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.*;
 import android.widget.TextView;
 
 
@@ -99,6 +101,40 @@ public class EpisodioMigranaDetailFragment extends Fragment {
             dataAdapterIntesidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             ddlIntensidad.setAdapter(dataAdapterIntesidades);
 
+            if(mItem.getDescripcionesEpisodio() != null)
+            {
+                TableLayout table = (TableLayout)rootView.findViewById(R.id.episodiomigrana_trDesencadenantes);
+                for (int i = 0; i < mItem.getDescripcionesEpisodio().size(); i++)
+                {
+                    DescripcionEpisodio descripcion = mItem.getDescripcionesEpisodio().get(i);
+
+
+                    //Crea el label
+                    final TableRow.LayoutParams lblParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+                    lblParams.column = 1;
+                    final TextView label = new TextView(getActivity());
+                    label.setLayoutParams(lblParams);
+                    label.setText(descripcion.getNombreTipoDesencadenante());
+
+                    //Crea la caja de texto
+                    final TableRow.LayoutParams txtParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+                    txtParams.column = 2;
+                    final EditText txt = new EditText(getActivity());
+                    txt.setLayoutParams(txtParams);
+                    txt.setText(descripcion.getDescripcionDesencadenante());
+
+                    //Crea la fila que va a agregar
+                    final TableRow.LayoutParams trParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+                    trParams.span = 2;
+                    final TableRow tr =new TableRow(getActivity());
+                    tr.addView(label);
+                    tr.addView(txt);
+                    tr.setLayoutParams(trParams);
+                    //Agrega la fila a la tabla
+                    table.addView(tr);
+                }
+            }
+
 
             //Se atacha al evento del bot�n
             final Button button = ((Button) rootView.findViewById(R.id.episodiomigrana_btnGuardar));
@@ -109,13 +145,13 @@ public class EpisodioMigranaDetailFragment extends Fragment {
 
                     int idEpisodio = Integer.parseInt(getArguments().getString(ARG_ITEM_ID));
                     //Actualizacion
-                    if(idEpisodio > 0)
+                    if (idEpisodio > 0)
                         episodio.setId(idEpisodio);
 
 
                     //episodio.setIdPaciente(((MigranaApplication)getActivity().getApplication()).getAuthenticatedUser().getIdentification());
 
-                    episodio.setIdLocalizacionDolor(((ListaValor)((Spinner) getActivity().findViewById(R.id.episodiomigrana_ddlLocalizacionDolor)).getSelectedItem()).getId()); ;
+                    episodio.setIdLocalizacionDolor(((ListaValor) ((Spinner) getActivity().findViewById(R.id.episodiomigrana_ddlLocalizacionDolor)).getSelectedItem()).getId()); ;
                     episodio.setIdIntensidad(((ListaValor)((Spinner) getActivity().findViewById(R.id.episodiomigrana_ddlIntensidad)).getSelectedItem()).getId());
 
                 }
