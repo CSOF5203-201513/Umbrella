@@ -1,0 +1,13 @@
+<resources>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Cedula</string>
+    <string name="prompt_password">Clave</string>
+    <string name="action_sign_in">Entrar</string>
+    <string name="action_sign_in_short">Entrar</string>
+
+    <string name="error_invalid_email">Ingresa una cedula valida</string>
+    <string name="error_invalid_password">La clave es demasiada corta</string>
+    <string name="error_incorrect_password">La clave es invalida</string>
+    <string name="error_field_required">Este campo es obligatorio</string>
+</resources>
