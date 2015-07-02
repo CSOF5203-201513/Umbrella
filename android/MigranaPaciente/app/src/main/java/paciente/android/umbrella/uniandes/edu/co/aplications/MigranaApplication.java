@@ -50,6 +50,30 @@ public class MigranaApplication extends Application {
         return localizacionesDolor;
     }
 
+
+    private List<ListaValor> desencadenantes;
+    /***
+     * Retorna todos los desencadenantes activos en el sistema
+     * @param ctx Contexto de la aplicacion
+     * @return
+     */
+    public List<ListaValor> getDesencadenantes(Context ctx){
+        //Si ya fueron consultadas previamente no las consulta de nuevo
+        if(desencadenantes == null)
+        {
+            GetListasRestTask listasRest = new GetListasRestTask(ctx, 3);
+            try {
+                desencadenantes = listasRest.execute().get();
+            } catch (InterruptedException e) {
+                //TODO:codigo de exepcion
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        return desencadenantes;
+    }
+
     private List<ListaValor> intensidades;
     /***
      * Retorna todas las intensidades del dolor existentes
