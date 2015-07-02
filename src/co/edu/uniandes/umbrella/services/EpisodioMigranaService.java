@@ -10,7 +10,6 @@ import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
-import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -39,8 +38,9 @@ public class EpisodioMigranaService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAll() {
+            EpisodioMigrana em = new EpisodioMigrana();
 		return Response.status(200).header("Access-Control-Allow-Origin", "*")
-				.entity("hola").build();
+				.entity(em).build();
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class EpisodioMigranaService {
 
 		JSONObject rta = new JSONObject();
 		rta.put("success", "true");
-
+                EpisodioMigrana em = new EpisodioMigrana();
 		return Response.status(200).header("Access-Control-Allow-Origin", "*")
 				.entity(rta.toJSONString()).build();
 	}
