@@ -58,21 +58,31 @@ public class EpisodioMigranaDetailFragment extends Fragment {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
+            int idEpisodioSeleccionado = Integer.parseInt(getArguments().getString(ARG_ITEM_ID));
 
-            GetEpisodiosMigranaRestTask restEpisodios = new GetEpisodiosMigranaRestTask(getActivity(),Integer.parseInt(getArguments().getString(ARG_ITEM_ID))  );
-            try {
-                List<EpisodioMigrana> episodios = restEpisodios.execute().get();
-                if(episodios != null && episodios.size() > 0)
-                    mItem = episodios.get(0);
-                else
-                    mItem = new EpisodioMigrana();
+            if(idEpisodioSeleccionado > 0)
+            {
+                GetEpisodiosMigranaRestTask restEpisodios = new GetEpisodiosMigranaRestTask(getActivity(), idEpisodioSeleccionado );
+                try {
+                    List<EpisodioMigrana> episodios = restEpisodios.execute().get();
+                    if(episodios != null && episodios.size() > 0)
+                        mItem = episodios.get(0);
+                    else
+                        mItem = new EpisodioMigrana();
 
-            } catch (InterruptedException e) {
-                //TODO: Mostrar execopcion
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
+                } catch (InterruptedException e) {
+                    //TODO: Mostrar execopcion
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
             }
+            else
+            {
+                mItem = null;
+            }
+
+
         }
     }
 
@@ -81,113 +91,89 @@ public class EpisodioMigranaDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_episodiomigrana_detail, container, false);
 
+        MigranaApplication application = (MigranaApplication)getActivity().getApplication();
+        //Carga el drop down de localizaciones del dolor
+        Spinner ddlLocalizaciones =cargarDdlLocalizaciones(rootView, application);
+        //Carga el drop down de intensidades
+        Spinner ddlIntensidad = cargarDdlIntensidades(rootView, application);
+        //Carga los desencadenantes
+        cargarDescripciones(rootView, application);
+
+
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.episodiomigrana_paciente_nombre)).setText(mItem.getPacienteNombre());
             ((TextView) rootView.findViewById(R.id.episodiomigrana_fecha)).setText(mItem.getFechaCreacion());
             ((TextView) rootView.findViewById(R.id.episodiomigrana_medico_nombre)).setText(mItem.getMedicoNombre());
 
-
-            MigranaApplication application = (MigranaApplication)getActivity().getApplication();
-
-            //Carga el drop down de localizaciones del dolor
-            Spinner ddlLocalizaciones = ((Spinner) rootView.findViewById(R.id.episodiomigrana_ddlLocalizacionDolor));
-            ArrayAdapter<ListaValor> dataAdapterLocalizaciones = new ArrayAdapter<ListaValor>(getActivity(),
-                    android.R.layout.simple_spinner_dropdown_item,  application.getLocalizacionesDolor(getActivity()));
-            dataAdapterLocalizaciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            ddlLocalizaciones.setAdapter(dataAdapterLocalizaciones);
             ddlLocalizaciones.setSelection(getIndexListaValor(application.getLocalizacionesDolor(getActivity()), mItem.getIdLocalizacionDolor()));
-
-
-            //Carga el drop down de intensidades
-            Spinner ddlIntensidad = ((Spinner) rootView.findViewById(R.id.episodiomigrana_ddlIntensidad));
-            ArrayAdapter<ListaValor> dataAdapterIntesidades = new ArrayAdapter<ListaValor>(getActivity(),
-                    android.R.layout.simple_spinner_dropdown_item,  application.getIntensidades(getActivity()));
-            dataAdapterIntesidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            ddlIntensidad.setAdapter(dataAdapterIntesidades);
             ddlIntensidad.setSelection(getIndexListaValor(application.getIntensidades(getActivity()), mItem.getIdIntensidad()));
-
-
-            List<ListaValor> desencadentantesParametrizados = application.getDesencadenantes(getActivity());
-            if(desencadentantesParametrizados != null && desencadentantesParametrizados.size() > 0)
-            {
-                LinearLayout table = (LinearLayout)rootView.findViewById(R.id.episodiomigrana_trDesencadenantes);
-                for (int i = 0; i < desencadentantesParametrizados.size(); i++)
-                {
-                    //DescripcionEpisodio descripcion = mItem.getDescripcionesEpisodio().get(i);
-                    //Busca el objeto correspondiente al desencadentante enviado
-                    DescripcionEpisodio descripcion = getDescripcionDesencadenantePorIdTipoDesencadenante(mItem.getDescripcionesEpisodio(), desencadentantesParametrizados.get(i).getId());
-
-                    final TextView label = new TextView(getActivity());
-                    label.setText(desencadentantesParametrizados.get(i).getValor());
-
-                    final EditText txt = new EditText(getActivity());
-                    if(descripcion != null)
-                        txt.setText(descripcion.getDescripcionDesencadenante());
-
-                    table.addView(label);
-                    table.addView(txt);
-                }
-            }
-
-
-            //Se atacha al evento del bot�n
-            final Button button = ((Button) rootView.findViewById(R.id.episodiomigrana_btnGuardar));
-            button.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    // Perform action on click
-                    EpisodioMigrana episodio = new EpisodioMigrana();
-                    MigranaApplication application = (MigranaApplication)getActivity().getApplication();
-
-                    int idEpisodio = Integer.parseInt(getArguments().getString(ARG_ITEM_ID));
-                    //Actualizacion
-                    if (idEpisodio > 0)
-                        episodio.setId(idEpisodio);
-
-                    episodio.setIdLocalizacionDolor(((ListaValor) ((Spinner) getActivity().findViewById(R.id.episodiomigrana_ddlLocalizacionDolor)).getSelectedItem()).getId());
-                    episodio.setIdIntensidad(((ListaValor) ((Spinner) getActivity().findViewById(R.id.episodiomigrana_ddlIntensidad)).getSelectedItem()).getId());
-                    episodio.setDescripcionesEpisodio(getDescripcionesEpisodio());
-                    //episodio.setIdPaciente(application.getAuthenticatedUser().getId());
-
-                    PostEpisodiosMigranaRestTask postTask = new PostEpisodiosMigranaRestTask(getActivity(), episodio);
-                    try {
-                        if(postTask.execute().get())
-                        {
-                            new AlertDialog.Builder(getActivity())
-                            .setTitle("Operación exitosa")
-                            .setMessage("El registro ha sido guardado correctamente")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
-                                public void onClick(DialogInterface dialog, int wich)
-                                {
-                                    getActivity().finish();
-                                }
-                            }).show();
-                        }
-                        else
-                        {
-                            //TODO: Mostrar error
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            });
-
-            //Al cancelar cierra la acción
-            final Button btnCancelar = ((Button) rootView.findViewById(R.id.episodiomigrana_btnCancelar));
-            btnCancelar.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    getActivity().finish();
-                }
-            });
         }
+
+        cargarBotonGuardar(rootView);
+        cargarBotonCancelar(rootView);
 
         return rootView;
     }
+    private void cargarBotonCancelar(View rootView)
+    {
+        //Al cancelar cierra la acción
+        final Button btnCancelar = ((Button) rootView.findViewById(R.id.episodiomigrana_btnCancelar));
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
 
+    }
+
+     private void cargarBotonGuardar(View rootView)
+     {
+         //Se atacha al evento del bot�n
+         final Button button = ((Button) rootView.findViewById(R.id.episodiomigrana_btnGuardar));
+         button.setOnClickListener(new View.OnClickListener() {
+             public void onClick(View v) {
+                 // Perform action on click
+                 EpisodioMigrana episodio = new EpisodioMigrana();
+                 MigranaApplication application = (MigranaApplication)getActivity().getApplication();
+
+                 int idEpisodio = Integer.parseInt(getArguments().getString(ARG_ITEM_ID));
+                 //Actualizacion
+                 if (idEpisodio > 0)
+                     episodio.setId(idEpisodio);
+
+                 episodio.setIdLocalizacionDolor(((ListaValor) ((Spinner) getActivity().findViewById(R.id.episodiomigrana_ddlLocalizacionDolor)).getSelectedItem()).getId());
+                 episodio.setIdIntensidad(((ListaValor) ((Spinner) getActivity().findViewById(R.id.episodiomigrana_ddlIntensidad)).getSelectedItem()).getId());
+                 episodio.setDescripcionesEpisodio(getDescripcionesEpisodio());
+                 //episodio.setIdPaciente(application.getAuthenticatedUser().getId());
+
+                 PostEpisodiosMigranaRestTask postTask = new PostEpisodiosMigranaRestTask(getActivity(), episodio);
+                 try {
+                     if(postTask.execute().get())
+                     {
+                         new AlertDialog.Builder(getActivity())
+                                 .setTitle("Operación exitosa")
+                                 .setMessage("El registro ha sido guardado correctamente")
+                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                     public void onClick(DialogInterface dialog, int wich) {
+                                         getActivity().finish();
+                                     }
+                                 }).show();
+                     }
+                     else
+                     {
+                         //TODO: Mostrar error
+                     }
+                 } catch (InterruptedException e) {
+                     e.printStackTrace();
+                 } catch (ExecutionException e) {
+                     e.printStackTrace();
+                 }
+
+             }
+         });
+
+     }
     private List<DescripcionEpisodio> getDescripcionesEpisodio() {
         LinearLayout tableDescripciones = (LinearLayout)getActivity().findViewById(R.id.episodiomigrana_trDesencadenantes);
         MigranaApplication application = (MigranaApplication)getActivity().getApplication();
@@ -208,6 +194,58 @@ public class EpisodioMigranaDetailFragment extends Fragment {
             }
         }
         return descripciones;
+    }
+
+
+    public Spinner cargarDdlLocalizaciones(View rootView, MigranaApplication application)
+    {
+        Spinner ddlLocalizaciones = ((Spinner) rootView.findViewById(R.id.episodiomigrana_ddlLocalizacionDolor));
+        ArrayAdapter<ListaValor> dataAdapterLocalizaciones = new ArrayAdapter<ListaValor>(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, application.getLocalizacionesDolor(getActivity()));
+        dataAdapterLocalizaciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ddlLocalizaciones.setAdapter(dataAdapterLocalizaciones);
+        return ddlLocalizaciones;
+    }
+
+    public Spinner cargarDdlIntensidades(View rootView, MigranaApplication application)
+    {
+        Spinner ddlIntensidad = ((Spinner) rootView.findViewById(R.id.episodiomigrana_ddlIntensidad));
+        ArrayAdapter<ListaValor> dataAdapterIntesidades = new ArrayAdapter<ListaValor>(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item,  application.getIntensidades(getActivity()));
+        dataAdapterIntesidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ddlIntensidad.setAdapter(dataAdapterIntesidades);
+        return ddlIntensidad;
+    }
+
+    public void cargarDescripciones(View rootView, MigranaApplication application)
+    {
+        List<ListaValor> desencadentantesParametrizados = application.getDesencadenantes(getActivity());
+        if(desencadentantesParametrizados != null && desencadentantesParametrizados.size() > 0)
+        {
+            LinearLayout table = (LinearLayout)rootView.findViewById(R.id.episodiomigrana_trDesencadenantes);
+            for (int i = 0; i < desencadentantesParametrizados.size(); i++)
+            {
+                //DescripcionEpisodio descripcion = mItem.getDescripcionesEpisodio().get(i);
+                //Busca el objeto correspondiente al desencadentante enviado
+                DescripcionEpisodio descripcion = new DescripcionEpisodio();
+                //Si esta editando carga el vvalor del objeto, si esta creando carga el valor de la LISTAVALOR
+                if(mItem != null)
+                    descripcion = getDescripcionDesencadenantePorIdTipoDesencadenante(mItem.getDescripcionesEpisodio(), desencadentantesParametrizados.get(i).getId());
+                else
+                    descripcion.setNombreTipoDesencadenante(desencadentantesParametrizados.get(i).getValor());
+
+                final TextView label = new TextView(getActivity());
+                label.setText(desencadentantesParametrizados.get(i).getValor());
+
+                final EditText txt = new EditText(getActivity());
+                if(descripcion != null)
+                    txt.setText(descripcion.getDescripcionDesencadenante());
+
+                table.addView(label);
+                table.addView(txt);
+            }
+        }
+
     }
 
     /***

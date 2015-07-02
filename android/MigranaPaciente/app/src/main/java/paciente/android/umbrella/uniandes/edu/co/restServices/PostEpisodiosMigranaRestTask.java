@@ -51,20 +51,13 @@ public class PostEpisodiosMigranaRestTask extends AsyncTask<Void,Void, Boolean> 
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
+            HttpEntity<EpisodioMigrana> entity = new HttpEntity<EpisodioMigrana>(episodio, headers);
+
             //Cuando es para edici�n env�a un put
             if(episodio.getId() > 0)
-            {
-                HttpEntity<EpisodioMigrana> entity = new HttpEntity<EpisodioMigrana>(episodio, headers);
-                Boolean response = restTemplate.exchange(url, HttpMethod.PUT, entity, Boolean.class).getBody();
-                return response;
-            }
+                return restTemplate.exchange(url, HttpMethod.PUT, entity, Boolean.class).getBody();
             else
-            {
-                //realiza el llamado
-//                EpisodioMigrana[] episodios = restTemplate.exchange(url, HttpMethod.GET, null, EpisodioMigrana[].class).getBody();
-//                return new ArrayList<EpisodioMigrana>(Arrays.asList(episodios)) ;
-                return false;
-            }
+                return restTemplate.exchange(url, HttpMethod.POST, entity, Boolean.class).getBody();
 
 
         } catch (Exception e) {

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import paciente.android.umbrella.uniandes.edu.co.entities.EpisodioMigrana;
 
@@ -41,6 +43,15 @@ public class EpisodioMigranaListActivity extends FragmentActivity
         // Show the Up button in the action bar.
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        Button btnNuevo = (Button)findViewById(R.id.listaEpisodios_Nuevo);
+        btnNuevo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent detailIntent = new Intent(v.getContext(), EpisodioMigranaDetailActivity.class);
+                detailIntent.putExtra(EpisodioMigranaDetailFragment.ARG_ITEM_ID, "0");
+                startActivity(detailIntent);
+            }
+        });
+
         if (findViewById(R.id.episodiomigrana_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-large and
@@ -53,6 +64,9 @@ public class EpisodioMigranaListActivity extends FragmentActivity
             ((EpisodioMigranaListFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.episodiomigrana_list))
                     .setActivateOnItemClick(true);
+
+
+
         }
 
         // TODO: If exposing deep links into your app, handle intents here.
