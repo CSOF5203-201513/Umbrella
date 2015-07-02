@@ -43,8 +43,9 @@ public class EpisodioMigranaService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAll() {
+            EpisodioMigrana em = new EpisodioMigrana();
 		return Response.status(200).header("Access-Control-Allow-Origin", "*")
-				.entity("hola").build();
+				.entity(em).build();
 	}
 
 	/**
@@ -105,7 +106,7 @@ public class EpisodioMigranaService {
 
 		JSONObject rta = new JSONObject();
 		rta.put("success", "true");
-
+                EpisodioMigrana em = new EpisodioMigrana();
 		return Response.status(200).header("Access-Control-Allow-Origin", "*")
 				.entity(rta.toJSONString()).build();
 	}
