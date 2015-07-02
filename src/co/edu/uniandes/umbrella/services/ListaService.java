@@ -18,7 +18,7 @@ import org.json.simple.JSONObject;
  *
  */
 
-@Path("/usuarios")
+@Path("/lista")
 @Produces(MediaType.APPLICATION_JSON)
 public class ListaService {
 	
