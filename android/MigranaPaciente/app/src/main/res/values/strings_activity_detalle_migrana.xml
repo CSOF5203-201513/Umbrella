@@ -4,5 +4,8 @@
     <string name="detalleMigrana_lblLocalizacionDolor">Localización del dolor</string>
     <string name="detalleMigrana_lblIntensidad">Intensidad</string>
     <string name="detalleMigrana_btnGuardar">Guardar</string>
+    <string name="detalleMigrana_btnCancelar">Cancelar</string>
+    <string name="detalleMigrana_lblNombreMedico">Nombre médico</string>
+
 
 </resources>

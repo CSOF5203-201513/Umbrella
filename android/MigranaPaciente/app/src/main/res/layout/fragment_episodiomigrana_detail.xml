@@ -23,6 +23,7 @@
                 android:visibility="visible"
                 android:layout_column="2"/>
         </TableRow>
+
         <TableRow>
             <TextView
                 android:layout_width="match_parent"
@@ -40,6 +41,24 @@
                 android:textIsSelectable="true"
                 tools:context="paciente.android.ubrella.uniandes.edu.co.migranapaciente.EpisodioMigranaDetailFragment"
                android:visibility="visible"
+                android:layout_column="2"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/detalleMigrana_lblNombreMedico"
+                android:id="@+id/episodiomigrana_lbl_nombre_medico"
+                android:layout_column="1" />
+
+            <TextView android:id="@+id/episodiomigrana_medico_nombre"
+                style="?android:attr/textAppearanceLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textIsSelectable="true"
+                tools:context="paciente.android.ubrella.uniandes.edu.co.migranapaciente.EpisodioMigranaDetailFragment"
+                android:visibility="visible"
                 android:layout_column="2"/>
         </TableRow>
 
@@ -73,14 +92,15 @@
                 android:layout_column="2" />
 
         </TableRow>
-        <TableRow >
-            <TableLayout android:id="@+id/episodiomigrana_trDesencadenantes"
-                android:layout_span="2"
+        <TableRow android:layout_width="match_parent">
+            <LinearLayout android:id="@+id/episodiomigrana_trDesencadenantes"
+                android:layout_span="3"
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
-            </TableLayout>
+
+            </LinearLayout>
         </TableRow>
         <TableRow>
             <Button
@@ -88,6 +108,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/detalleMigrana_btnGuardar"
                 android:id="@+id/episodiomigrana_btnGuardar"
+                android:layout_column="1" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detalleMigrana_btnCancelar"
+                android:id="@+id/episodiomigrana_btnCancelar"
                 android:layout_column="1" />
 
         </TableRow>
