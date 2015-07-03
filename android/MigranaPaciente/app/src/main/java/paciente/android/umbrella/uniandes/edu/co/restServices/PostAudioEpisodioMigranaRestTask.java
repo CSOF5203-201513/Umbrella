@@ -11,39 +11,39 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import paciente.android.ubrella.uniandes.edu.co.migranapaciente.R;
 import paciente.android.umbrella.uniandes.edu.co.entities.EpisodioMigrana;
-import paciente.android.umbrella.uniandes.edu.co.entities.User;
-
+import paciente.android.umbrella.uniandes.edu.co.entities.PostAudio;
 
 /**
- * Created by Gabriel on 01/07/2015.
+ * Created by Gabriel on 02/07/2015.
  */
-public class PostEpisodiosMigranaRestTask extends AsyncTask<Void,Void, EpisodioMigrana> {
+public class PostAudioEpisodioMigranaRestTask extends AsyncTask<Void,Void, String> {
 
     private Context ctx;
-    public PostEpisodiosMigranaRestTask(Context ctx)
+    public PostAudioEpisodioMigranaRestTask(Context ctx)
     {
         this.ctx = ctx;
     }
 
-    private EpisodioMigrana episodio;
+    private String audioStringEpisodio;
+    private int idEpisodio;
 
-    public PostEpisodiosMigranaRestTask(Context ctx, EpisodioMigrana episodio)
+    public PostAudioEpisodioMigranaRestTask(Context ctx, int idEpisodio, String audioStringEpisodio)
     {
         this.ctx = ctx;
-        this.episodio = episodio;
+        this.audioStringEpisodio = audioStringEpisodio;
+        this.idEpisodio = idEpisodio;
     }
+
 
     @Override
-    protected EpisodioMigrana doInBackground(Void... params) {
-
+    protected String doInBackground(Void... params) {
         try {
 
-            final String url = ctx.getString(R.string.server_api_url) + "api/episodios";
+            final String url = ctx.getString(R.string.server_api_url) + "api/episodios/"+ idEpisodio +"/audio";
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
@@ -51,22 +51,17 @@ public class PostEpisodiosMigranaRestTask extends AsyncTask<Void,Void, EpisodioM
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
-            HttpEntity<EpisodioMigrana> entity = new HttpEntity<EpisodioMigrana>(episodio, headers);
+            PostAudio audio = new PostAudio();
+            audio.setAudioGrabado(audioStringEpisodio);
+            HttpEntity<PostAudio> entity = new HttpEntity<PostAudio>(audio, headers);
 
-            //Cuando es para edici�n env�a un put
-            if(episodio.getId() > 0)
-                return restTemplate.exchange(url, HttpMethod.PUT, entity, EpisodioMigrana.class).getBody();
-            else
-                return restTemplate.exchange(url, HttpMethod.POST, entity, EpisodioMigrana.class).getBody();
-
+            String respuesta = restTemplate.exchange(url, HttpMethod.POST, entity, String.class).getBody();
+            return respuesta;
 
         } catch (Exception e) {
             Log.e("PostEpisodiosRestTask", e.getMessage(), e);
             System.out.println(e.getMessage());
-            return  null;
+            return  "";
         }
-
-
     }
 }
-

@@ -36,4 +36,5 @@ dependencies {
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.2'
     compile 'com.android.support:support-v4:22.2.0'
+    compile group: 'commons-io', name: 'commons-io', version: '2.0.1'
 }

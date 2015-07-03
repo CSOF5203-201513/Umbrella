@@ -6,6 +6,7 @@
     <string name="detalleMigrana_btnGuardar">Guardar</string>
     <string name="detalleMigrana_btnCancelar">Cancelar</string>
     <string name="detalleMigrana_lblNombreMedico">Nombre médico</string>
+    <string name="detalleMigrana_btnGrabarAudio">Grabar Audio</string>
 
 
 </resources>

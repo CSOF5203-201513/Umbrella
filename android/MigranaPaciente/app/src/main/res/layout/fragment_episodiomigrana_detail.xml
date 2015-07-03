@@ -14,10 +14,9 @@
                 android:layout_column="1" />
 
             <TextView android:id="@+id/episodiomigrana_paciente_nombre"
-                style="?android:attr/textAppearanceLarge"
+                style="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
                 android:textIsSelectable="true"
                 tools:context="paciente.android.ubrella.uniandes.edu.co.migranapaciente.EpisodioMigranaDetailFragment"
                 android:visibility="visible"
@@ -34,10 +33,9 @@
 
             <TextView
                 android:id="@+id/episodiomigrana_fecha"
-                style="?android:attr/textAppearanceLarge"
+                style="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
                 android:textIsSelectable="true"
                 tools:context="paciente.android.ubrella.uniandes.edu.co.migranapaciente.EpisodioMigranaDetailFragment"
                android:visibility="visible"
@@ -52,10 +50,9 @@
                 android:layout_column="1" />
 
             <TextView android:id="@+id/episodiomigrana_medico_nombre"
-                style="?android:attr/textAppearanceLarge"
+                style="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
                 android:textIsSelectable="true"
                 tools:context="paciente.android.ubrella.uniandes.edu.co.migranapaciente.EpisodioMigranaDetailFragment"
                 android:visibility="visible"
@@ -101,6 +98,25 @@
 
 
             </LinearLayout>
+        </TableRow>
+        <TableRow>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detalleMigrana_btnGrabarAudio"
+                android:id="@+id/episodiomigrana_btnGrabarAudio"
+                android:layout_column="1"
+                android:src="@drawable/abc_ic_voice_search_api_mtrl_alpha"
+                android:background="#ff1a98f2" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/episodiomigrana_btnReproducirAudio"
+                android:layout_column="2"
+                android:src="@drawable/ic_media_play"
+                android:background="#ff06f200" />
+
         </TableRow>
         <TableRow>
             <Button

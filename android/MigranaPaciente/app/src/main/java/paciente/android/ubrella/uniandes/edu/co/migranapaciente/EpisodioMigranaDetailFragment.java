@@ -2,8 +2,15 @@ package paciente.android.ubrella.uniandes.edu.co.migranapaciente;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +22,10 @@ import android.widget.*;
 import android.widget.TextView;
 
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -23,6 +34,7 @@ import java.util.concurrent.ExecutionException;
 import paciente.android.umbrella.uniandes.edu.co.aplications.MigranaApplication;
 import paciente.android.umbrella.uniandes.edu.co.entities.*;
 import paciente.android.umbrella.uniandes.edu.co.restServices.GetEpisodiosMigranaRestTask;
+import paciente.android.umbrella.uniandes.edu.co.restServices.PostAudioEpisodioMigranaRestTask;
 import paciente.android.umbrella.uniandes.edu.co.restServices.PostEpisodiosMigranaRestTask;
 
 /**
@@ -38,6 +50,16 @@ public class EpisodioMigranaDetailFragment extends Fragment {
      */
     public static final String ARG_ITEM_ID = "item_id";
 
+    private ImageButton btnRecordButton = null;
+    private MediaRecorder mRecorder = null;
+    private static String mFileName = null;
+
+    private ImageButton   btnPlayButton = null;
+    private MediaPlayer mPlayer = null;
+
+
+
+
     /**
      * The dummy content this fragment is presenting.
      */
@@ -48,6 +70,7 @@ public class EpisodioMigranaDetailFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public EpisodioMigranaDetailFragment() {
+
     }
 
     @Override
@@ -112,6 +135,8 @@ public class EpisodioMigranaDetailFragment extends Fragment {
 
         cargarBotonGuardar(rootView);
         cargarBotonCancelar(rootView);
+        cargarBotonGrabar(rootView);
+        cargarBotonReproducir(rootView);
 
         return rootView;
     }
@@ -126,6 +151,156 @@ public class EpisodioMigranaDetailFragment extends Fragment {
         });
 
     }
+
+
+    private void startRecording() {
+        mRecorder = new MediaRecorder();
+        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+        mFileName += "/audiorecordtest.3gp";
+        mRecorder.setOutputFile(mFileName);
+        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        try {
+            mRecorder.prepare();
+        } catch (IOException e) {
+            Log.e("GuardarAudio", "prepare() failed");
+        }
+
+        mRecorder.start();
+    }
+
+    private void stopRecording() {
+        mRecorder.stop();
+        mRecorder.release();
+        mRecorder = null;
+
+    }
+
+    private void onRecord(boolean start) {
+        if (start) {
+            startRecording();
+        } else {
+            stopRecording();
+        }
+    }
+
+    boolean mStartRecording = true;
+    private void cargarBotonGrabar(View rootView)
+    {
+        btnRecordButton = (ImageButton)rootView.findViewById(R.id.episodiomigrana_btnGrabarAudio);
+
+        View.OnClickListener clicker = new View.OnClickListener() {
+            public void onClick(View v) {
+                onRecord(mStartRecording);
+                if (mStartRecording) {
+                    btnRecordButton.setBackgroundColor(Color.parseColor("#ffcc000e"));
+                    btnRecordButton.setImageResource(R.drawable.ic_media_pause);
+                } else {
+                    btnRecordButton.setBackgroundColor(Color.parseColor("#ff1a98f2"));
+                    btnRecordButton.setImageResource(R.drawable.abc_ic_voice_search_api_mtrl_alpha);
+                    btnPlayButton.setVisibility(View.VISIBLE);
+                }
+                mStartRecording = !mStartRecording;
+            }
+        };
+
+        btnRecordButton.setOnClickListener(clicker);
+
+    }
+
+    boolean mStartPlaying = true;
+    private void cargarBotonReproducir(View rootView)
+    {
+        btnPlayButton = (ImageButton)rootView.findViewById(R.id.episodiomigrana_btnReproducirAudio);
+
+        //Si no tiene audio previo oculta el boton de reproducir
+        if(mItem == null || mItem.getUrlAudio() == null || mItem.getUrlAudio() == "")
+            btnPlayButton.setVisibility(View.GONE);
+
+        View.OnClickListener clicker = new View.OnClickListener() {
+
+                public void onClick(View v) {
+                    onPlay(mStartPlaying);
+                    if (mStartPlaying) {
+                        btnPlayButton.setBackgroundColor(Color.parseColor("#ffcc000e"));
+                        btnPlayButton.setImageResource(R.drawable.ic_media_pause);
+                    } else {
+                        btnPlayButton.setBackgroundColor(Color.parseColor("#ff1a98f2"));
+                        btnPlayButton.setImageResource(R.drawable.ic_media_play);
+                    }
+                    mStartPlaying = !mStartPlaying;
+                }
+
+        };
+
+        btnPlayButton.setOnClickListener(clicker);
+    }
+
+    private void onPlay(boolean start) {
+        if (start) {
+            startPlaying();
+        } else {
+            stopPlaying();
+        }
+    }
+
+    private void startPlaying() {
+        mPlayer = new MediaPlayer();
+        try {
+            String fileName = null;
+            //Si no se ha grabado nada y el episodio ya existe valida si en la URL ya venía algo
+            if(mItem != null && mFileName == null)
+            {
+                fileName = mItem.getUrlAudio();
+
+                if(fileName != null)
+                {
+                    fileName = getActivity().getString(R.string.server_api_url) + fileName;
+                    mFileName = fileName;
+                    mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                }
+
+            }
+            else
+            {
+                fileName = mFileName;
+            }
+
+            if(fileName != null)
+            {
+                mPlayer.setDataSource(mFileName);
+                mPlayer.prepare();
+                mPlayer.start();
+            }
+            else
+            {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("No hay audio")
+                        .setMessage("En el momento no hay audio para reproducir")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int wich) {
+                                btnPlayButton.setBackgroundColor(Color.parseColor("#ff1a98f2"));
+                                btnPlayButton.setImageResource(R.drawable.ic_media_play);
+                            }
+                        }).show();
+            }
+
+        } catch (IOException e) {
+            Log.e("IntentandoReproducir", "prepare() failed");
+        }
+        catch(Exception e)
+        {
+            Log.e("IntentandoReproducir", "prepare() failed");
+        }
+    }
+
+    private void stopPlaying() {
+        mPlayer.release();
+        mPlayer = null;
+    }
+
 
      private void cargarBotonGuardar(View rootView)
      {
@@ -149,8 +324,21 @@ public class EpisodioMigranaDetailFragment extends Fragment {
 
                  PostEpisodiosMigranaRestTask postTask = new PostEpisodiosMigranaRestTask(getActivity(), episodio);
                  try {
-                     if(postTask.execute().get())
+                     EpisodioMigrana episodioGuardado = postTask.execute().get();
+                     if(episodioGuardado != null)
                      {
+                        idEpisodio = episodioGuardado.getId();
+                        //Si hay archivo para enviar lo envia
+                         if(mFileName != null)
+                         {
+                             File file = new File(mFileName);
+                             byte[] bytes = FileUtils.readFileToByteArray(file);
+                             String encodedAudio = Base64.encodeToString(bytes, 0);
+                             PostAudioEpisodioMigranaRestTask postAudio = new PostAudioEpisodioMigranaRestTask(getActivity(),idEpisodio, encodedAudio );
+                             mItem.setUrlAudio(postAudio.execute().get());
+                         }
+
+
                          new AlertDialog.Builder(getActivity())
                                  .setTitle("Operación exitosa")
                                  .setMessage("El registro ha sido guardado correctamente")
@@ -165,8 +353,11 @@ public class EpisodioMigranaDetailFragment extends Fragment {
                          //TODO: Mostrar error
                      }
                  } catch (InterruptedException e) {
+                     //TODO:Mostrar error
                      e.printStackTrace();
                  } catch (ExecutionException e) {
+                     e.printStackTrace();
+                 } catch (IOException e) {
                      e.printStackTrace();
                  }
 
