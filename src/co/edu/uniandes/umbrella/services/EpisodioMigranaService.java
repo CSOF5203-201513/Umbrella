@@ -21,6 +21,11 @@ import org.json.simple.JSONObject;
 
 import co.edu.uniandes.umbrella.entity.EpisodioMigrana;
 import co.edu.uniandes.umbrella.entity.PersistenceManager;
+import co.edu.uniandes.umbrella.models.EpisodioMigranaDTO;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.RollbackException;
+import org.eclipse.persistence.exceptions.TransactionException;
 
 /**
  * @author erica.prado
@@ -32,7 +37,7 @@ import co.edu.uniandes.umbrella.entity.PersistenceManager;
 public class EpisodioMigranaService {
 
 	
-	@PersistenceContext(unitName = "ControlMigrana")
+    @PersistenceContext(unitName = "ControlMigrana")
     EntityManager entityManager;
 	
 	
@@ -56,59 +61,44 @@ public class EpisodioMigranaService {
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response add() throws NotSupportedException, SystemException {
-		
-		try {
-            entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-		
-		
-			
-		EpisodioMigrana e = new EpisodioMigrana();
-              
-        
-        e.setEstado(1);
-        e.setIdIntensidad(1);
-        e.setIdlocalizacionDolor(1);
-        e.setIdMedico(1);
-        e.setIdPaciente(1);
-        e.setRutaAudio("");  
-		
-        
-        try {
-        	
-        	UserTransaction transaction = (UserTransaction)new InitialContext().lookup("java:comp/UserTransaction");
-        	transaction.begin();
+	public Response add(EpisodioMigranaDTO episodio) {
+
+            int code;
             
-        	//Prueba Insert
-            //entityManager.persist(e);
-
-            //Prueba Consult
-        	//EpisodioMigrana prueba = entityManager.find(EpisodioMigrana.class, 1);
-        	
-            transaction.commit();
-           
-        } catch (Throwable t) {
-            t.printStackTrace();
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
+            try {
+                entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            e = null;
-        } finally {
-        	entityManager.clear();
-        	entityManager.close();
-        }
-        
-        
-		
 
-		JSONObject rta = new JSONObject();
-		rta.put("success", "true");
-                EpisodioMigrana em = new EpisodioMigrana();
-		return Response.status(200).header("Access-Control-Allow-Origin", "*")
-				.entity(rta.toJSONString()).build();
-	}
+            JSONObject rta = new JSONObject();
+            EpisodioMigrana e = new EpisodioMigrana();
+
+            e.setEstado(episodio.getEstado());
+            e.setIdIntensidad(episodio.getIdIntensidad());
+            e.setIdlocalizacionDolor(episodio.getIdlocalizacionDolor());
+            e.setIdMedico(episodio.getIdMedico());
+            e.setIdPaciente(1);
+            e.setRutaAudio("");
+
+            try {
+                UserTransaction transaction = (UserTransaction) new InitialContext().lookup("java:comp/UserTransaction");
+                transaction.begin();
+                entityManager.persist(e);
+                transaction.commit();
+                rta.put("Episodio", e.getId());
+                rta.put("success", "true");
+                code = 200;
+            } catch (Throwable t) {
+                t.printStackTrace();
+                rta.put("Error", "500 Internal server error.");
+                code = 500;
+                
+            }
+            
+            
+            return Response.status(code).header("Access-Control-Allow-Origin", "*")
+                    .entity(rta.toJSONString()).build();
+        }
 
 }
