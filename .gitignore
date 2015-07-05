@@ -23,10 +23,6 @@ Thumbs.db
 # OSX files
 .DS_Store
 
-# Eclipse project files
-.classpath
-.project
-
 # Netbeans project files
 nb-configuration.xml
 
@@ -38,4 +34,4 @@ nb-configuration.xml
 build/
 
 # Directorio destino para proyecto compilado
-/target
+target/
