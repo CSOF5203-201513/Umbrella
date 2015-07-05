@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" >
+<head>
+<f:loadBundle basename="main.resources.application" var="msg"/>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title><h:outputText value="#{msg.welcomeTitle}" /></title>
+</head>
+<body>
+<f:view>
+		<h:form>
+			<h:messages globalOnly="true" errorClass="err" warnClass="warn" infoClass="info" />
+			
+			<h:outputLabel value="#{msg.labelPpalConsultaEpisodios}" />
+
+			<!-- Panel de filtros de consulta -->
+			<h:panelGrid columns="2">
+			
+				<h:outputLabel value="#{msg.labelNroIdentificacion}" />
+				<h:panelGrid  columns="1">
+					<h:inputText id="field1" 
+						label="#{msg.labelNroIdentificacion}"
+						value="#{consultaEpisodiosPaciente.nroIdentificacion}"
+						required="true" >
+						<f:validateLength maximum="10" />
+					</h:inputText>
+					<h:message for="field1" ></h:message>
+				</h:panelGrid>
+				
+				<h:outputLabel for="field2" />
+				<h:panelGrid  columns="1">
+					<p:calendar id="field2" 
+						mode="inline"
+						label="#{msg.labelFechaInicio}"
+						value="#{consultaEpisodiosPaciente.fechaInicio}"
+						pattern="dd-MM-yyyy" />
+					<h:message for="field2" ></h:message>
+				</h:panelGrid>
+				
+				<h:outputLabel value="#{msg.labelFechaFin}" />
+				<h:panelGrid  columns="1">
+					<p:calendar id="field3"
+						value="#{consultaEpisodiosPaciente.fechaFin}" 
+						label="#{msg.labelFechaFin}" 
+						pattern="dd-MM-yyyy" />
+					<h:message for="field3" > </h:message>
+				</h:panelGrid>
+				
+				<h:commandButton   value="#{msg.botonConsulta}"
+					action="#{consultaEpisodiosPaciente.consultarEpisodiosPaciente}" />
+				<h:commandButton   value="#{msg.botonLimpiar}"
+					action="#{consultaEpisodiosPaciente.consultarEpisodiosPaciente}" />
+			</h:panelGrid>
+			
+			<!-- Panel de resultados -->
+			<h:panelGrid border="1" columns="2" rendered="#{consultaEpisodiosPaciente.mostrarResultado}">
+				<h:outputText value="item1"></h:outputText>
+				<h:outputText value="item2"></h:outputText>
+				<h:outputText value="item3"></h:outputText>
+				<h:outputText value="item4"></h:outputText>
+			</h:panelGrid>
+			
+		</h:form>
+	</f:view>
+</body>
+</html>
