@@ -9,6 +9,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -32,6 +34,7 @@ public class ListaValor implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @javax.validation.constraints.NotNull
     @Column(name = "id")
     private Integer id;

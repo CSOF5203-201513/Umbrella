@@ -6,6 +6,7 @@
 package co.edu.uniandes.negocio;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -15,6 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,6 +42,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "EpisodioMigrana.findByIdpaciente", query = "SELECT e FROM EpisodioMigrana e WHERE e.idpaciente = :idpaciente"),
     @NamedQuery(name = "EpisodioMigrana.findByRutaaudio", query = "SELECT e FROM EpisodioMigrana e WHERE e.rutaaudio = :rutaaudio")})
 public class EpisodioMigrana implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -49,10 +53,10 @@ public class EpisodioMigrana implements Serializable {
     @Column(name = "estado")
     private Integer estado;
     @Column(name = "fechacreacion")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
     @Column(name = "fechamodificacion")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechamodificacion;
     @Column(name = "idintensidad")
     private Integer idintensidad;
@@ -69,8 +73,34 @@ public class EpisodioMigrana implements Serializable {
     public EpisodioMigrana() {
     }
 
+    /**
+     * Actualizando fecha cuando se actualiza registro
+     */
+    @PreUpdate
+    private void updateTimestamp() {
+        Calendar calendar = Calendar.getInstance();
+        this.fechamodificacion = calendar.getTime();
+    }
+
+    /**
+     * Actualizando fecha cuando se crea registro
+     */
+    @PrePersist
+    private void creationTimestamp() {
+        Calendar calendar = Calendar.getInstance();
+        this.fechacreacion = calendar.getTime();
+    }
+
     public EpisodioMigrana(Integer id) {
         this.id = id;
+    }
+
+    public Date getFechacreacion() {
+        return fechacreacion;
+    }
+
+    public Date getFechamodificacion() {
+        return fechamodificacion;
     }
 
     public Integer getId() {
@@ -87,22 +117,6 @@ public class EpisodioMigrana implements Serializable {
 
     public void setEstado(Integer estado) {
         this.estado = estado;
-    }
-
-    public Date getFechacreacion() {
-        return fechacreacion;
-    }
-
-    public void setFechacreacion(Date fechacreacion) {
-        this.fechacreacion = fechacreacion;
-    }
-
-    public Date getFechamodificacion() {
-        return fechamodificacion;
-    }
-
-    public void setFechamodificacion(Date fechamodificacion) {
-        this.fechamodificacion = fechamodificacion;
     }
 
     public Integer getIdintensidad() {
@@ -169,5 +183,5 @@ public class EpisodioMigrana implements Serializable {
     public String toString() {
         return "co.edu.uniandes.negocio.EpisodioMigrana[ id=" + id + " ]";
     }
-    
+
 }
