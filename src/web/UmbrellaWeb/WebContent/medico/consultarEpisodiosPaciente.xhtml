@@ -5,12 +5,14 @@
 	xmlns:h="http://java.sun.com/jsf/html" 
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" >
-<head>
-<f:loadBundle basename="main.resources.application" var="msg"/>
+<h:head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</h:head>
+<f:loadBundle basename="main.resources.application" var="msg"/>
+<!--  
 <title><h:outputText value="#{msg.welcomeTitle}" /></title>
-</head>
-<body>
+-->
+<h:body>
 <f:view>
 		<h:form>
 			<h:messages globalOnly="true" errorClass="err" warnClass="warn" infoClass="info" />
@@ -31,10 +33,9 @@
 					<h:message for="field1" ></h:message>
 				</h:panelGrid>
 				
-				<h:outputLabel for="field2" />
+				<h:outputLabel value="#{msg.labelFechaInicio}" />
 				<h:panelGrid  columns="1">
-					<p:calendar id="field2" 
-						mode="inline"
+				<p:calendar id="field2" showOn="button"
 						label="#{msg.labelFechaInicio}"
 						value="#{consultaEpisodiosPaciente.fechaInicio}"
 						pattern="dd-MM-yyyy" />
@@ -43,7 +44,7 @@
 				
 				<h:outputLabel value="#{msg.labelFechaFin}" />
 				<h:panelGrid  columns="1">
-					<p:calendar id="field3"
+					<p:calendar id="field3" showOn="button"
 						value="#{consultaEpisodiosPaciente.fechaFin}" 
 						label="#{msg.labelFechaFin}" 
 						pattern="dd-MM-yyyy" />
@@ -57,14 +58,53 @@
 			</h:panelGrid>
 			
 			<!-- Panel de resultados -->
-			<h:panelGrid border="1" columns="2" rendered="#{consultaEpisodiosPaciente.mostrarResultado}">
-				<h:outputText value="item1"></h:outputText>
-				<h:outputText value="item2"></h:outputText>
-				<h:outputText value="item3"></h:outputText>
-				<h:outputText value="item4"></h:outputText>
+			<h:panelGrid columns="1" rendered="#{consultaEpisodiosPaciente.mostrarResultado}">
+				<p:dataTable value="#{consultaEpisodiosPaciente.episodios}" var="episodio" rowIndexVar="rowIndex">
+				
+					<p:column headerText="idEpisodio">
+				        <h:outputText value="#{episodio.idEpisodio}" />
+				    </p:column>
+				 
+				    <p:column headerText="fechaCreacion">
+				        <h:outputText value="#{episodio.fechaCreacion}" />
+				    </p:column>
+				 
+				    <p:column headerText="localizacionDolor">
+				        <h:outputText value="#{episodio.localizacionDolor}" />
+				    </p:column>
+				 
+				    <p:column headerText="estado">
+				        <h:outputText value="#{episodio.estado}" />
+				    </p:column>
+				    
+				    <p:column headerText="medico">
+				        <h:outputText value="#{episodio.medico}" />
+				    </p:column>
+				    
+				    <p:column headerText="ver detalle">
+						<h:commandLink action="#{consultaEpisodiosPaciente.verDetalle}"
+							
+							value="Ver detalle episodio" >
+							<f:param name="index" value="#{rowIndex}" />
+						</h:commandLink>
+				    </p:column>
+				
+				</p:dataTable>
 			</h:panelGrid>
 			
+			<!-- Panel detalle -->
+			<h:panelGrid  columns="1" rendered="#{consultaEpisodiosPaciente.mostrarDetalle}" >
+				<p:dataTable value="#{consultaEpisodiosPaciente.episodio.medicamentos}" var="medicamento">
+				
+					<p:column headerText="medicamento">
+				        <h:outputText value="#{medicamento}" />
+				    </p:column>
+				    
+				</p:dataTable>
+			</h:panelGrid>
+
+
 		</h:form>
 	</f:view>
-</body>
+</h:body>
 </html>
