@@ -5,6 +5,7 @@
  */
 package co.edu.uniandes.negocio;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 import javax.persistence.EntityManager;
@@ -60,8 +61,7 @@ public class EpisodioMigranaIT {
         em.getTransaction().begin();
         em.persist(epmi);
         em.getTransaction().commit();
-        //em.refresh(epmi);
-
+ 
     }
 
     @After
@@ -79,10 +79,28 @@ public class EpisodioMigranaIT {
         em.getTransaction().begin();
         epmi = em.find(EpisodioMigrana.class, 1);
         em.getTransaction().commit();
-        //em.refresh(epmi);
-        
+         
         Integer result = 1;
         Integer id = epmi.getId();
         assertEquals(result, id);
+    }
+    
+        /**
+     * Test of getId method, of class EpisodioMigrana.
+     */
+    @Test
+    public void testGetFechaModificacion() {
+        EpisodioMigrana epmi;
+        
+        em = factory.createEntityManager();
+        em.getTransaction().begin();
+        epmi = em.find(EpisodioMigrana.class, 1);
+        epmi.setRutaaudio("Ruta de prueba");
+        Calendar calendar = Calendar.getInstance();
+        Date fEsperada = calendar.getTime();
+        em.getTransaction().commit();
+ 
+        Date fModificaion = epmi.getFechamodificacion();
+        assertEquals(fModificaion.getDate(), fEsperada.getDate());
     }
 }
