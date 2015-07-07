@@ -58,7 +58,7 @@
 			</h:panelGrid>
 			
 			<!-- Panel de resultados -->
-			
+			<h:outputLabel value="#{msg.labelResultado}" rendered="#{consultaEpisodiosPaciente.mostrarResultado}"/>
 			<h:panelGrid columns="1" rendered="#{consultaEpisodiosPaciente.mostrarResultado}">
 				<p:dataTable value="#{consultaEpisodiosPaciente.episodios}" var="episodio" rowIndexVar="rowIndex" >
 				
@@ -67,7 +67,9 @@
 				    </p:column>
 				 
 				    <p:column headerText="fechaCreacion">
-				        <h:outputText value="#{episodio.fechaCreacion}" />
+				        <h:outputText value="#{episodio.fechaCreacion}" >
+				        	<f:convertDateTime pattern="dd-MM-yyyy" />
+				        </h:outputText>
 				    </p:column>
 				 
 				    <p:column headerText="localizacionDolor">
@@ -114,6 +116,11 @@
 				    </p:column>
 				</p:dataTable>
 			</h:panelGrid>
+			
+			<!-- Grafico de analisis -->
+			<h:commandButton   value="#{msg.botonVerGrafico}" 
+					action="#{consultaEpisodiosPaciente.verGrafico}" 
+					rendered="#{consultaEpisodiosPaciente.mostrarGenerarGrafico}"/>
 
 		</h:form>
 	</f:view>

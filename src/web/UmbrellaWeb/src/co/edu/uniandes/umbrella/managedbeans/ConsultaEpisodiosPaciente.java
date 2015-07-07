@@ -5,11 +5,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import co.edu.uniandes.umbrella.dto.EpisodiosDTO;
+import co.edu.uniandes.umbrella.negocio.ejb.MedicoServiceLocal;
 
 /**
  * @author Alejandra Chica
@@ -32,6 +34,8 @@ public class ConsultaEpisodiosPaciente {
 	private boolean mostrarResultado;
 
 	private boolean mostrarDetalle;
+	
+	private boolean mostrarGenerarGrafico;
 
 	/**
 	 * Campos tabla resultados
@@ -40,26 +44,55 @@ public class ConsultaEpisodiosPaciente {
 
 	private EpisodiosDTO episodio;
 
-	// @ManagedProperty(value="#{param.index}")
 	private Integer index;
 
 	/**
 	 * Campos detalle
 	 */
 
-	// @EJB
-	// private MedicoServiceRemote medicoService;
-
-	public ConsultaEpisodiosPaciente() {
-
-	}
+	 @EJB
+	 private MedicoServiceLocal medicoService;
 
 	public String consultarEpisodiosPaciente() {
+		
+		if(fechaInicio != null && fechaFin != null){
+			
+			medicoService.consultarPacientePeriodoTiempo(nroIdentificacion, fechaInicio, fechaFin);
+			mostrarGenerarGrafico = true;
+			
+		}else {
+			
+			medicoService.consultarPacientePorId(nroIdentificacion);
+			mostrarGenerarGrafico = false;
+		}
 
 		configurarEpisodios();
 
 		mostrarResultado = true;
 
+		return "";
+	}
+	
+	public String verDetalle() {
+
+		episodio = episodios.get(index);
+		medicoService.consultarEpisodioPorId(episodio.getIdEpisodio());
+		mostrarResultado = true;
+		mostrarDetalle = true;
+		
+		return "";
+	}
+	
+	public String limpiar() {
+
+		FacesContext.getCurrentInstance().getViewRoot().getViewMap().clear();
+		
+		return "";
+	}
+	
+	public String verGrafico() {
+
+		
 		return "";
 	}
 
@@ -124,21 +157,12 @@ public class ConsultaEpisodiosPaciente {
 		episodios.add(episodiosDTO2);
 	}
 
-	public String verDetalle() {
-
-		episodio = episodios.get(index);
-		mostrarResultado = true;
-		mostrarDetalle = true;
-		
-		return "";
+	public boolean isMostrarGenerarGrafico() {
+		return mostrarGenerarGrafico;
 	}
-	
-	public String limpiar() {
 
-		FacesContext.getCurrentInstance().getViewRoot().getViewMap().clear();
-//		remove("consultaEpisodiosPaciente");
-		
-		return "";
+	public void setMostrarGenerarGrafico(boolean mostrarGenerarGrafico) {
+		this.mostrarGenerarGrafico = mostrarGenerarGrafico;
 	}
 
 	public String getNroIdentificacion() {
