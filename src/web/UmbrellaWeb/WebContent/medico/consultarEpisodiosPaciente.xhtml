@@ -53,13 +53,14 @@
 				
 				<h:commandButton   value="#{msg.botonConsulta}"
 					action="#{consultaEpisodiosPaciente.consultarEpisodiosPaciente}" />
-				<h:commandButton   value="#{msg.botonLimpiar}"
-					action="#{consultaEpisodiosPaciente.consultarEpisodiosPaciente}" />
+				<h:commandButton   value="#{msg.botonLimpiar}" 
+					action="#{consultaEpisodiosPaciente.limpiar}" />
 			</h:panelGrid>
 			
 			<!-- Panel de resultados -->
+			
 			<h:panelGrid columns="1" rendered="#{consultaEpisodiosPaciente.mostrarResultado}">
-				<p:dataTable value="#{consultaEpisodiosPaciente.episodios}" var="episodio" rowIndexVar="rowIndex">
+				<p:dataTable value="#{consultaEpisodiosPaciente.episodios}" var="episodio" rowIndexVar="rowIndex" >
 				
 					<p:column headerText="idEpisodio">
 				        <h:outputText value="#{episodio.idEpisodio}" />
@@ -82,27 +83,37 @@
 				    </p:column>
 				    
 				    <p:column headerText="ver detalle">
-						<h:commandLink action="#{consultaEpisodiosPaciente.verDetalle}"
-							
-							value="Ver detalle episodio" >
-							<f:param name="index" value="#{rowIndex}" />
-						</h:commandLink>
-				    </p:column>
+         
+				      <h:commandLink  value="#{msg.linkDetalle}"
+						action="#{consultaEpisodiosPaciente.verDetalle}" >
+						<f:setPropertyActionListener value="#{rowIndex}" 
+							target="#{consultaEpisodiosPaciente.index}" />
+					</h:commandLink>
+     			   </p:column>
 				
 				</p:dataTable>
 			</h:panelGrid>
 			
 			<!-- Panel detalle -->
-			<h:panelGrid  columns="1" rendered="#{consultaEpisodiosPaciente.mostrarDetalle}" >
-				<p:dataTable value="#{consultaEpisodiosPaciente.episodio.medicamentos}" var="medicamento">
-				
+			<h:outputLabel value="#{msg.labelDetalle}"
+				rendered="#{consultaEpisodiosPaciente.mostrarDetalle}" />
+			<h:panelGrid  columns="3" rendered="#{consultaEpisodiosPaciente.mostrarDetalle}" >
+				<p:dataTable value="#{consultaEpisodiosPaciente.episodio.medicamentos}" var="medicamento" >
 					<p:column headerText="medicamento">
 				        <h:outputText value="#{medicamento}" />
 				    </p:column>
-				    
+				</p:dataTable>
+				<p:dataTable value="#{consultaEpisodiosPaciente.episodio.catalizadores}" var="catalizador" >
+					<p:column headerText="catalizador">
+				        <h:outputText value="#{catalizador}" />
+				    </p:column>
+				</p:dataTable>
+				<p:dataTable value="#{consultaEpisodiosPaciente.episodio.sintomas}" var="sintoma" >
+					<p:column headerText="sintoma">
+				        <h:outputText value="#{sintoma}" />
+				    </p:column>
 				</p:dataTable>
 			</h:panelGrid>
-
 
 		</h:form>
 	</f:view>
