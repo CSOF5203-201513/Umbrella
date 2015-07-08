@@ -3,6 +3,8 @@
  */
 package co.edu.uniandes.umbrellarest.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,10 +76,44 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario>{
 	        	UsuarioConsultas consultasUsuarios = new UsuarioConsultas();
 	        	DesencadenanteEpisodioConsultas consultasDesencadenantes = new DesencadenanteEpisodioConsultas();
 	        	EpisodioMigranaModel episodioModel = EpisodioMigranaModel.GetModel(episodio, consultasUsuarios.find(episodio.getIdmedico()), consultasUsuarios.find(episodio.getIdpaciente()), consultasDesencadenantes.getByEpisodioId(episodio.getId()));
-	        	System.out.println("---------------------------------------->Mostrar mensaje");
 	        	models.add(episodioModel);
 	        }
 	        return models;
+	    }
+	    
+//	    @GET
+//	    @Path("{cedula}/episodios/{fechaInicio}/{fechaFin}")
+//	    @Produces({"application/xml", "application/json"})
+//	    public List<EpisodioMigranaModel> getBetween(@PathParam("cedula") String cedula, @PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin)
+//	    {
+//	    	
+//	    	
+//	    	UsuarioConsultas usuariosConsultas = new UsuarioConsultas();
+//	    	
+//	    	LocalDate ltFechaInicio = convertStringToLocalTime(fechaInicio);
+//	    	LocalDate ltFechaFin = convertStringToLocalTime(fechaFin);
+//	    	
+//	    	List<EpisodioMigrana> entities = usuariosConsultas.getEpisodiosBetween(cedula, ltFechaInicio, ltFechaFin);
+//	    	
+//	    	
+//	    	
+//	    	List<EpisodioMigranaModel> models = new  ArrayList<EpisodioMigranaModel>(); 
+//	        for(EpisodioMigrana episodio : entities)
+//	        {
+//	        	UsuarioConsultas consultasUsuarios = new UsuarioConsultas();
+//	        	DesencadenanteEpisodioConsultas consultasDesencadenantes = new DesencadenanteEpisodioConsultas();
+//	        	EpisodioMigranaModel episodioModel = EpisodioMigranaModel.GetModel(episodio, consultasUsuarios.find(episodio.getIdmedico()), consultasUsuarios.find(episodio.getIdpaciente()), consultasDesencadenantes.getByEpisodioId(episodio.getId()));
+//	        	System.out.println("---------------------------------------->Mostrar mensaje");
+//	        	models.add(episodioModel);
+//	        }
+//	        return models;
+//	    }
+	    
+	    public static LocalDate convertStringToLocalTime(String date)
+	    {
+	    	String[] parts = date.split("-");
+	    	LocalDate ltFechaInicio = LocalDate.of(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
+	    	return ltFechaInicio;
 	    }
 
 	    @GET

@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import paciente.android.ubrella.uniandes.edu.co.migranapaciente.R;
+import paciente.android.umbrella.uniandes.edu.co.aplications.MigranaApplication;
 import paciente.android.umbrella.uniandes.edu.co.entities.*;
 
 /**
@@ -43,7 +44,14 @@ public class GetEpisodiosMigranaRestTask extends AsyncTask<Void,Void, List<Episo
     protected List<EpisodioMigrana> doInBackground(Void... params) {
         try {
 
-            final String url = ctx.getString(R.string.server_api_url) + "api/episodios" + (filtroIdEpisodio > 0 ? "/" + filtroIdEpisodio : "");
+            String url = "";
+            MigranaApplication app = (MigranaApplication) ctx.getApplicationContext();
+
+            if(filtroIdEpisodio > 0)
+                url = ctx.getString(R.string.server_api_url) + "episodios/" + filtroIdEpisodio;
+            else
+                url = ctx.getString(R.string.server_api_url) + "usuarios/" + app.getAuthenticatedUser().getIdentification() + "/episodios";
+
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
@@ -69,7 +77,7 @@ public class GetEpisodiosMigranaRestTask extends AsyncTask<Void,Void, List<Episo
         } catch (Exception e) {
             Log.e("EspisodioMigranaRest", e.getMessage(), e);
             System.out.println(e.getMessage());
-            return  null;
+            return  new ArrayList<EpisodioMigrana>();
         }
     }
 }

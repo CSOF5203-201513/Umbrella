@@ -73,6 +73,8 @@ public class UsuarioConsultas extends AbstractFacade<Usuario> {
 	    	return query.getSingleResult();
 	    }
 	    
+
+	    
 	    public List<EpisodioMigrana> getEpisodiosByCedula(String cedula)
 	    {
 	    	Usuario usuario = getByCedula(cedula);
@@ -81,6 +83,16 @@ public class UsuarioConsultas extends AbstractFacade<Usuario> {
 	    	query.setParameter("idpaciente", usuario.getId()); 	
 	    	return query.getResultList();
 	    }
+	    
+//	    public List<EpisodioMigrana> getBetween(String cedula, LocalDate fechaInicio, LocalDate fechaFin)
+//	    {
+//	    	Usuario usuario = getByCedula(cedula);
+//	    	TypedQuery<EpisodioMigrana> query =
+//	    	em.createNamedQuery("EpisodioMigrana.findByIdpaciente", EpisodioMigrana.class);
+//	    	query.setParameter("idpaciente", usuario.getId()); 	
+//	    	return query.getResultList();
+//	    }
+	    
 	    
 	    public List<Usuario> findRange(Integer from, Integer to) {
 	        return super.findRange(new int[]{from, to});

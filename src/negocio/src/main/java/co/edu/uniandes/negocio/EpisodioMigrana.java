@@ -40,7 +40,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "EpisodioMigrana.findByIdlocalizaciondolor", query = "SELECT e FROM EpisodioMigrana e WHERE e.idlocalizaciondolor = :idlocalizaciondolor"),
     @NamedQuery(name = "EpisodioMigrana.findByIdmedico", query = "SELECT e FROM EpisodioMigrana e WHERE e.idmedico = :idmedico"),
     @NamedQuery(name = "EpisodioMigrana.findByIdpaciente", query = "SELECT e FROM EpisodioMigrana e WHERE e.idpaciente = :idpaciente"),
+    @NamedQuery(name = "EpisodioMigrana.findBetween", query = "SELECT e FROM EpisodioMigrana e WHERE e.fechacreacion between :fechainicio and :fechafin"),
     @NamedQuery(name = "EpisodioMigrana.findByRutaaudio", query = "SELECT e FROM EpisodioMigrana e WHERE e.rutaaudio = :rutaaudio")})
+
 public class EpisodioMigrana implements Serializable {
 
     private static final long serialVersionUID = 1L;

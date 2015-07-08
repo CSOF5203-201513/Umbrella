@@ -319,7 +319,7 @@ public class EpisodioMigranaDetailFragment extends Fragment {
 
                  episodio.setIdLocalizacionDolor(((ListaValor) ((Spinner) getActivity().findViewById(R.id.episodiomigrana_ddlLocalizacionDolor)).getSelectedItem()).getId());
                  episodio.setIdIntensidad(((ListaValor) ((Spinner) getActivity().findViewById(R.id.episodiomigrana_ddlIntensidad)).getSelectedItem()).getId());
-                 episodio.setDescripcionesEpisodio(getDescripcionesEpisodio());
+                 episodio.setDesencadenantes(getDescripcionesEpisodio());
                  //episodio.setIdPaciente(application.getAuthenticatedUser().getId());
 
                  PostEpisodiosMigranaRestTask postTask = new PostEpisodiosMigranaRestTask(getActivity(), episodio);
@@ -421,7 +421,7 @@ public class EpisodioMigranaDetailFragment extends Fragment {
                 DescripcionEpisodio descripcion = new DescripcionEpisodio();
                 //Si esta editando carga el vvalor del objeto, si esta creando carga el valor de la LISTAVALOR
                 if(mItem != null)
-                    descripcion = getDescripcionDesencadenantePorIdTipoDesencadenante(mItem.getDescripcionesEpisodio(), desencadentantesParametrizados.get(i).getId());
+                    descripcion = getDescripcionDesencadenantePorIdTipoDesencadenante(mItem.getDesencadenantes(), desencadentantesParametrizados.get(i).getId());
                 else
                     descripcion.setNombreTipoDesencadenante(desencadentantesParametrizados.get(i).getValor());
 

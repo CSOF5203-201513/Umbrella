@@ -19,18 +19,18 @@ public class EpisodioMigrana {
     private String medicoNumeroIdentificacion;
     private String medicoNombre;
     private String urlAudio;
-    private List<DescripcionEpisodio> descripcionesEpisodio;
+    private List<DescripcionEpisodio> desencadenantes;
 
     public int getId() {
         return id;
     }
 
-    public List<DescripcionEpisodio> getDescripcionesEpisodio() {
-        return descripcionesEpisodio;
+    public List<DescripcionEpisodio> getDesencadenantes() {
+        return desencadenantes;
     }
 
-    public void setDescripcionesEpisodio(List<DescripcionEpisodio> descripcionesEpisodio) {
-        this.descripcionesEpisodio = descripcionesEpisodio;
+    public void setDesencadenantes(List<DescripcionEpisodio> desencadenantes) {
+        this.desencadenantes = desencadenantes;
     }
 
     public void setId(int id) {

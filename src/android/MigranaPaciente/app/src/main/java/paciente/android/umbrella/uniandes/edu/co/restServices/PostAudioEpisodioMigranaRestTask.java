@@ -43,7 +43,7 @@ public class PostAudioEpisodioMigranaRestTask extends AsyncTask<Void,Void, Strin
     protected String doInBackground(Void... params) {
         try {
 
-            final String url = ctx.getString(R.string.server_api_url) + "api/episodios/"+ idEpisodio +"/audio";
+            final String url = ctx.getString(R.string.server_api_url) + "episodios/"+ idEpisodio +"/audio";
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 

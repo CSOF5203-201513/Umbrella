@@ -41,7 +41,7 @@ public class GetListasRestTask extends AsyncTask<Void,Void, List<ListaValor>> {
     protected List<ListaValor> doInBackground(Void... params) {
         try {
 
-            final String url = ctx.getString(R.string.server_api_url) + "api/listas/" + filtroIdLista;
+            final String url = ctx.getString(R.string.server_api_url) + "listas/" + filtroIdLista;
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 

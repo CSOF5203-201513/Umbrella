@@ -273,31 +273,42 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         @Override
         protected User doInBackground(Void... params) {
 
+            User user = new User();
+            user.setIdentification("222");
+            user.setName("Gabriel");
+            user.setId(2);
+            return user;
+//            try {
+//
+//                final String url = getString(R.string.server_api_url) + "auth";
+//                RestTemplate restTemplate = new RestTemplate();
+//                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+//
+//                //Define los datos del usuario que se va autenticar
+//                User user = new User();
+//                user.setIdentification(mEmail);
+//                user.setPassword(mPassword);
+//
+//                //Agrega los headers para hacer un llamado por JSON
+//                HttpHeaders headers = new HttpHeaders();
+//                headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+//
+//                //realiza el llamado
+//                HttpEntity<User> entity = new HttpEntity<User>(user, headers);
+//                user = restTemplate.exchange(url, HttpMethod.POST, entity, User.class).getBody();
+//                return user;
+//            } catch (Exception e) {
+//                Log.e("LoginActivity", e.getMessage(), e);
+//                System.out.println(e.getMessage());
+//
+//                User user = new User();
+//                user.setIdentification("222");
+//                user.setName("Gabriel");
+//                user.setId(2);
+//
+//                return  null;
+//            }
 
-            try {
-
-                final String url = getString(R.string.server_api_url) + "api/auth";
-                RestTemplate restTemplate = new RestTemplate();
-                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-
-                //Define los datos del usuario que se va autenticar
-                User user = new User();
-                user.setIdentification(mEmail);
-                user.setPassword(mPassword);
-
-                //Agrega los headers para hacer un llamado por JSON
-                HttpHeaders headers = new HttpHeaders();
-                headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-
-                //realiza el llamado
-                HttpEntity<User> entity = new HttpEntity<User>(user, headers);
-                user = restTemplate.exchange(url, HttpMethod.POST, entity, User.class).getBody();
-                return user;
-            } catch (Exception e) {
-                Log.e("LoginActivity", e.getMessage(), e);
-                System.out.println(e.getMessage());
-                return  null;
-            }
         }
 
         @Override
