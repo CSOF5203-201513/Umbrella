@@ -9,6 +9,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -17,21 +19,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author gremly
+ * @author Erica
  */
 @Entity
-@Table(name = "desencadenanteepisodio")
+@Table(name = "desencadenante_episodio")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Desencadenanteepisodio.findAll", query = "SELECT d FROM Desencadenanteepisodio d"),
-    @NamedQuery(name = "Desencadenanteepisodio.findById", query = "SELECT d FROM Desencadenanteepisodio d WHERE d.id = :id"),
-    @NamedQuery(name = "Desencadenanteepisodio.findByDesencadenante", query = "SELECT d FROM Desencadenanteepisodio d WHERE d.desencadenante = :desencadenante"),
-    @NamedQuery(name = "Desencadenanteepisodio.findByIdepisodiomigrana", query = "SELECT d FROM Desencadenanteepisodio d WHERE d.idepisodiomigrana = :idepisodiomigrana"),
-    @NamedQuery(name = "Desencadenanteepisodio.findByTipodesencadenante", query = "SELECT d FROM Desencadenanteepisodio d WHERE d.tipodesencadenante = :tipodesencadenante")})
-public class Desencadenanteepisodio implements Serializable {
+    @NamedQuery(name = "DesencadenanteEpisodio.findAll", query = "SELECT d FROM DesencadenanteEpisodio d"),
+    @NamedQuery(name = "DesencadenanteEpisodio.findById", query = "SELECT d FROM DesencadenanteEpisodio d WHERE d.id = :id"),
+    @NamedQuery(name = "DesencadenanteEpisodio.findByDesencadenante", query = "SELECT d FROM DesencadenanteEpisodio d WHERE d.desencadenante = :desencadenante"),
+    @NamedQuery(name = "DesencadenanteEpisodio.findByIdepisodiomigrana", query = "SELECT d FROM DesencadenanteEpisodio d WHERE d.idepisodiomigrana = :idepisodiomigrana"),
+    @NamedQuery(name = "DesencadenanteEpisodio.findByTipodesencadenante", query = "SELECT d FROM DesencadenanteEpisodio d WHERE d.tipodesencadenante = :tipodesencadenante")})
+public class DesencadenanteEpisodio implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @javax.validation.constraints.NotNull
     @Column(name = "id")
     private Integer id;
@@ -43,10 +46,10 @@ public class Desencadenanteepisodio implements Serializable {
     @Column(name = "tipodesencadenante")
     private Integer tipodesencadenante;
 
-    public Desencadenanteepisodio() {
+    public DesencadenanteEpisodio() {
     }
 
-    public Desencadenanteepisodio(Integer id) {
+    public DesencadenanteEpisodio(Integer id) {
         this.id = id;
     }
 
@@ -59,7 +62,7 @@ public class Desencadenanteepisodio implements Serializable {
     }
 
     public String getDesencadenante() {
-        return desencadenante;
+    	return desencadenante;
     }
 
     public void setDesencadenante(String desencadenante) {
@@ -71,6 +74,7 @@ public class Desencadenanteepisodio implements Serializable {
     }
 
     public void setIdepisodiomigrana(Integer idepisodiomigrana) {
+    	System.out.println("--------------------------------------> ;Entro y actualizó");
         this.idepisodiomigrana = idepisodiomigrana;
     }
 
@@ -92,10 +96,10 @@ public class Desencadenanteepisodio implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Desencadenanteepisodio)) {
+        if (!(object instanceof DesencadenanteEpisodio)) {
             return false;
         }
-        Desencadenanteepisodio other = (Desencadenanteepisodio) object;
+        DesencadenanteEpisodio other = (DesencadenanteEpisodio) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -104,7 +108,7 @@ public class Desencadenanteepisodio implements Serializable {
 
     @Override
     public String toString() {
-        return "co.edu.uniandes.negocio.Desencadenanteepisodio[ id=" + id + " ]";
+        return "co.edu.uniandes.negocio.DesencadenanteEpisodio[ id=" + id + " ]";
     }
     
 }
