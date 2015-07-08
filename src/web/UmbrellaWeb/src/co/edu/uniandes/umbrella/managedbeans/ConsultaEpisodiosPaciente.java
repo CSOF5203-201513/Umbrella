@@ -4,21 +4,22 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import co.edu.uniandes.umbrella.dto.EpisodiosDTO;
-import co.edu.uniandes.umbrella.negocio.ejb.MedicoServiceLocal;
 
 /**
  * @author Alejandra Chica
  *
  */
 @ManagedBean
-@ViewScoped
+@RequestScoped
 public class ConsultaEpisodiosPaciente {
 
 	/**
@@ -32,72 +33,49 @@ public class ConsultaEpisodiosPaciente {
 	private Date fechaFin;
 
 	private boolean mostrarResultado;
-
-	private boolean mostrarDetalle;
 	
-	private boolean mostrarGenerarGrafico;
+	private boolean mostrarDetalle;
 
 	/**
 	 * Campos tabla resultados
 	 */
 	private List<EpisodiosDTO> episodios;
-
+	
 	private EpisodiosDTO episodio;
 
+	@ManagedProperty(value="#{param.index}")
 	private Integer index;
+	
 
 	/**
 	 * Campos detalle
 	 */
 
-	 @EJB
-	 private MedicoServiceLocal medicoService;
+	// @EJB
+	// private MedicoServiceRemote medicoService;
+
+	public ConsultaEpisodiosPaciente() {
+
+	}
 
 	public String consultarEpisodiosPaciente() {
-		
-		if(fechaInicio != null && fechaFin != null){
-			
-			medicoService.consultarPacientePeriodoTiempo(nroIdentificacion, fechaInicio, fechaFin);
-			mostrarGenerarGrafico = true;
-			
-		}else {
-			
-			medicoService.consultarPacientePorId(nroIdentificacion);
-			mostrarGenerarGrafico = false;
-		}
 
 		configurarEpisodios();
 
+		// medicoService.crear();
+		// FacesContext context = FacesContext.getCurrentInstance();
+		// context.addMessage(
+		// null,
+		// new FacesMessage(codigoRespuesta.getTipoMensaje(),
+		// codigoRespuesta.getMensaje(), ""));
+
 		mostrarResultado = true;
 
-		return "";
-	}
-	
-	public String verDetalle() {
-
-		episodio = episodios.get(index);
-		medicoService.consultarEpisodioPorId(episodio.getIdEpisodio());
-		mostrarResultado = true;
-		mostrarDetalle = true;
-		
-		return "";
-	}
-	
-	public String limpiar() {
-
-		FacesContext.getCurrentInstance().getViewRoot().getViewMap().clear();
-		
-		return "";
-	}
-	
-	public String verGrafico() {
-
-		
 		return "";
 	}
 
 	private void configurarEpisodios() {
-
+		
 		List<String> medicamentos1 = new ArrayList<String>();
 		medicamentos1.add("medicamento 1");
 		medicamentos1.add("medicamento 2");
@@ -124,7 +102,7 @@ public class ConsultaEpisodiosPaciente {
 		episodiosDTO1.setMedicamentos(medicamentos1);
 		episodiosDTO1.setCatalizadores(catalizadores1);
 		episodiosDTO1.setSintomas(sintomas1);
-
+		
 		List<String> medicamentos2 = new ArrayList<String>();
 		medicamentos2.add("medicamento 4");
 		medicamentos2.add("medicamento 5");
@@ -156,13 +134,29 @@ public class ConsultaEpisodiosPaciente {
 		episodios.add(episodiosDTO1);
 		episodios.add(episodiosDTO2);
 	}
-
-	public boolean isMostrarGenerarGrafico() {
-		return mostrarGenerarGrafico;
+	
+	public String verDetalle(){
+		Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		index = (Integer) params.get("index");
+		System.out.println(index + "index2");
+		
+		episodio = episodios.get(index);
+		
+		mostrarDetalle = true;
+		return "";
+		
 	}
-
-	public void setMostrarGenerarGrafico(boolean mostrarGenerarGrafico) {
-		this.mostrarGenerarGrafico = mostrarGenerarGrafico;
+	public void configurarDetalle(ActionEvent event){
+		
+		index = (Integer) event.getComponent().getAttributes().get("index");
+		Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		index = (Integer) params.get("index");
+//		actionListener="#{consultaEpisodiosPaciente.configurarDetalle}" 
+		
+		System.out.println(index + "index");
+		episodio = episodios.get(index);
+		
+		mostrarDetalle = true;
 	}
 
 	public String getNroIdentificacion() {
@@ -241,8 +235,7 @@ public class ConsultaEpisodiosPaciente {
 	}
 
 	/**
-	 * @param episodio
-	 *            the episodio to set
+	 * @param episodio the episodio to set
 	 */
 	public void setEpisodio(EpisodiosDTO episodio) {
 		this.episodio = episodio;
@@ -256,8 +249,7 @@ public class ConsultaEpisodiosPaciente {
 	}
 
 	/**
-	 * @param mostrarDetalle
-	 *            the mostrarDetalle to set
+	 * @param mostrarDetalle the mostrarDetalle to set
 	 */
 	public void setMostrarDetalle(boolean mostrarDetalle) {
 		this.mostrarDetalle = mostrarDetalle;
@@ -271,8 +263,7 @@ public class ConsultaEpisodiosPaciente {
 	}
 
 	/**
-	 * @param index
-	 *            the index to set
+	 * @param index the index to set
 	 */
 	public void setIndex(Integer index) {
 		this.index = index;

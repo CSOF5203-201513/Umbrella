@@ -31,11 +31,11 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
 //        resources.add(co.edu.uniandes.umbrellarest.service.CatalizadorFacadeREST.class);
 //        resources.add(co.edu.uniandes.umbrellarest.service.DesencadenanteEpisodioFacadeREST.class);
-//        resources.add(co.edu.uniandes.umbrellarest.service.DesencadenanteepisodioFacadeREST.class);
+       
         resources.add(co.edu.uniandes.umbrellarest.service.EpisodioMigranaFacadeREST.class);
-//        resources.add(co.edu.uniandes.umbrellarest.service.ListaFacadeREST.class);
+        resources.add(co.edu.uniandes.umbrellarest.service.ListaFacadeREST.class);
 //        resources.add(co.edu.uniandes.umbrellarest.service.ListaValorFacadeREST.class);
-//        resources.add(co.edu.uniandes.umbrellarest.service.UsuarioFacadeREST.class);
+        resources.add(co.edu.uniandes.umbrellarest.service.UsuarioFacadeREST.class);
     }
     
 }

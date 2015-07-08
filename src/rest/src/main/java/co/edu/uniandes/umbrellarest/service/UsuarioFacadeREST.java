@@ -3,11 +3,13 @@
  */
 package co.edu.uniandes.umbrellarest.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,7 +19,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import co.edu.uniandes.negocio.DesencadenanteEpisodio;
+import co.edu.uniandes.negocio.EpisodioMigrana;
 import co.edu.uniandes.negocio.Usuario;
+import co.edu.uniandes.umbrellarest.model.EpisodioMigranaModel;
 
 /**
  * @author Erica
@@ -53,6 +58,26 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario>{
 	    @Path("{id}")
 	    public void remove(@PathParam("id") Integer id) {
 	        super.remove(super.find(id));
+	    }
+	    
+	    @GET
+	    @Path("{cedula}/episodios")
+	    @Produces({"application/xml", "application/json"})
+	    public List<EpisodioMigranaModel> getEpisodios(@PathParam("cedula") String cedula)
+	    {
+	    	UsuarioConsultas usuariosConsultas = new UsuarioConsultas();
+	    	List<EpisodioMigrana> entities = usuariosConsultas.getEpisodiosByCedula(cedula);
+	    	
+	    	List<EpisodioMigranaModel> models = new  ArrayList<EpisodioMigranaModel>(); 
+	        for(EpisodioMigrana episodio : entities)
+	        {
+	        	UsuarioConsultas consultasUsuarios = new UsuarioConsultas();
+	        	DesencadenanteEpisodioConsultas consultasDesencadenantes = new DesencadenanteEpisodioConsultas();
+	        	EpisodioMigranaModel episodioModel = EpisodioMigranaModel.GetModel(episodio, consultasUsuarios.find(episodio.getIdmedico()), consultasUsuarios.find(episodio.getIdpaciente()), consultasDesencadenantes.getByEpisodioId(episodio.getId()));
+	        	System.out.println("---------------------------------------->Mostrar mensaje");
+	        	models.add(episodioModel);
+	        }
+	        return models;
 	    }
 
 	    @GET
