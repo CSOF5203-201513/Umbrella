@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author gremly
+ * @author Erica
  */
 @Entity
 @Table(name = "desencadenante_episodio")
@@ -62,7 +62,7 @@ public class DesencadenanteEpisodio implements Serializable {
     }
 
     public String getDesencadenante() {
-        return desencadenante;
+    	return desencadenante;
     }
 
     public void setDesencadenante(String desencadenante) {
@@ -74,6 +74,7 @@ public class DesencadenanteEpisodio implements Serializable {
     }
 
     public void setIdepisodiomigrana(Integer idepisodiomigrana) {
+    	System.out.println("--------------------------------------> ;Entro y actualizó");
         this.idepisodiomigrana = idepisodiomigrana;
     }
 

@@ -1,8 +1,65 @@
 package co.edu.uniandes.umbrellarest.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
+import co.edu.uniandes.negocio.DesencadenanteEpisodio;
+import co.edu.uniandes.negocio.EpisodioMigrana;
+import co.edu.uniandes.negocio.Usuario;
 
 public class EpisodioMigranaModel {
+	
+	
+	public static EpisodioMigrana GetEntity(EpisodioMigranaModel model)
+	{
+		EpisodioMigrana entity = new EpisodioMigrana();
+	  entity.setIdintensidad(model.getIdIntensidad());
+	  entity.setIdlocalizaciondolor(model.getIdlocalizacionDolor());
+	  entity.setIdmedico(model.getIdMedico() );
+	  entity.setIdpaciente(model.getIdPaciente());
+	  entity.setId(model.getId());
+	  return entity;
+	}
+	
+	public static EpisodioMigranaModel GetModel(EpisodioMigrana entity, Usuario medico, Usuario paciente, List<DesencadenanteEpisodio> desencadenantes)
+	{
+		EpisodioMigranaModel model = new EpisodioMigranaModel();
+		model.setIdIntensidad(entity.getIdintensidad());
+		model.setIdlocalizacionDolor(entity.getIdlocalizaciondolor());
+		model.setIdMedico(entity.getIdmedico() );
+		model.setIdPaciente(entity.getIdpaciente());
+		model.setId(entity.getId());
+		
+		if(medico != null)
+		{
+			model.setIdMedico(medico.getId());
+			model.setMedicoNombre(medico.getNombre());
+		}
+		
+		if(paciente != null)
+		{
+			model.setIdPaciente(paciente.getId());
+			model.setPacienteNombre(paciente.getNombre());
+		}
+		
+		if(desencadenantes != null)
+		{
+			
+			List<DesencadenanteEpisodioModel> modelsDesencadenantes = new ArrayList<DesencadenanteEpisodioModel>();
+			for(DesencadenanteEpisodio desencadenante : desencadenantes)
+			{
+				modelsDesencadenantes.add(DesencadenanteEpisodioModel.GetModel(desencadenante));
+			}
+			//model.setDesencadenantes((DesencadenanteEpisodioModel[]) modelsDesencadenantes.toArray());
+			model.setDesencadenantes(modelsDesencadenantes.toArray(new DesencadenanteEpisodioModel[modelsDesencadenantes.size()]));
+			
+			//DesencadenanteEpisodioModel[] ccc = (DesencadenanteEpisodioModel[])modelsDesencadenantes.toArray();
+		}
+		
+		return model;
+	}
+	
 	
 	int	id;
 	Date fechaCreacion;

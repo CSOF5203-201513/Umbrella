@@ -1,6 +1,27 @@
 package co.edu.uniandes.umbrellarest.model;
 
+import co.edu.uniandes.negocio.DesencadenanteEpisodio;
+
 public class DesencadenanteEpisodioModel {
+	
+	
+	public static DesencadenanteEpisodio GetEntity(DesencadenanteEpisodioModel model)
+	{
+		DesencadenanteEpisodio entity = new DesencadenanteEpisodio();
+		
+		entity.setTipodesencadenante(model.getIdTipoDesencadenante());
+		entity.setDesencadenante(model.getDescripcionDesencadenante());
+		return entity;
+	}
+	
+	
+	public static DesencadenanteEpisodioModel GetModel(DesencadenanteEpisodio entity)
+	{
+		DesencadenanteEpisodioModel model = new DesencadenanteEpisodioModel();
+		model.setIdTipoDesencadenante(entity.getTipodesencadenante());
+		model.setDescripcionDesencadenante(entity.getDesencadenante());
+		return model;
+	}
 	
 	int	id;
 	int	idEpisodioMigrana;

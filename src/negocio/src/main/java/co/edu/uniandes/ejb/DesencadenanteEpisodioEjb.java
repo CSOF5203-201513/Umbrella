@@ -12,7 +12,7 @@ import javax.persistence.Persistence;
 
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 
-import co.edu.uniandes.negocio.Desencadenanteepisodio;
+import co.edu.uniandes.negocio.DesencadenanteEpisodio;
 
 /**
  * @author Erica
@@ -32,7 +32,7 @@ public class DesencadenanteEpisodioEjb {
 
 	}
 
-	public int Crear (List<Desencadenanteepisodio> listaDesencadenantes){
+	public int Crear (List<DesencadenanteEpisodio> listaDesencadenantes){
 
 		System.out.println("Creando desencadenates episodio migraña");
 
@@ -44,7 +44,7 @@ public class DesencadenanteEpisodioEjb {
 
 			em.getTransaction().begin();
 
-			for (Desencadenanteepisodio desencadenanteepisodio : listaDesencadenantes) {
+			for (DesencadenanteEpisodio desencadenanteepisodio : listaDesencadenantes) {
 				 em.persist(desencadenanteepisodio);
 		         em.flush();
 		         em.clear();

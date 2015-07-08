@@ -3,7 +3,6 @@
  */
 package co.edu.uniandes.ejb;
 
-import java.util.List;
 import java.util.Properties;
 
 import javax.persistence.EntityManager;
@@ -12,7 +11,6 @@ import javax.persistence.Persistence;
 
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 
-import co.edu.uniandes.negocio.Desencadenanteepisodio;
 import co.edu.uniandes.negocio.EpisodioMigrana;
 
 /**
