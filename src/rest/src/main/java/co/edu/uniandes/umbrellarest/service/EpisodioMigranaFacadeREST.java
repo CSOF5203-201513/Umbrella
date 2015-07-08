@@ -64,7 +64,7 @@ public class EpisodioMigranaFacadeREST  {
 		  
 		  model.setId(entity.getId());
 		  
-		  rta.put("a", model);
+		  rta.put("id", model.getId());
 		  
 		  return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(rta.toJSONString()).build();
 	  }
@@ -73,8 +73,6 @@ public class EpisodioMigranaFacadeREST  {
 		  rta.put("success", "false");
 		  return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(rta.toJSONString()).build();		  
 	  }
-	  
-	  
 	  
   }
   
@@ -115,7 +113,7 @@ public class EpisodioMigranaFacadeREST  {
   		  
   		  model.setId(entity.getId());
   		  
-  		  rta.put("a", model);
+  		  rta.put("id", model.getId());
   		  
   		  return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(rta.toJSONString()).build();
   	  }

@@ -8,7 +8,7 @@ public class DesencadenanteEpisodioModel {
 	public static DesencadenanteEpisodio GetEntity(DesencadenanteEpisodioModel model)
 	{
 		DesencadenanteEpisodio entity = new DesencadenanteEpisodio();
-		
+		entity.setId(model.getId());
 		entity.setTipodesencadenante(model.getIdTipoDesencadenante());
 		entity.setDesencadenante(model.getDescripcionDesencadenante());
 		return entity;
@@ -18,6 +18,7 @@ public class DesencadenanteEpisodioModel {
 	public static DesencadenanteEpisodioModel GetModel(DesencadenanteEpisodio entity)
 	{
 		DesencadenanteEpisodioModel model = new DesencadenanteEpisodioModel();
+		model.setId(entity.getId());
 		model.setIdTipoDesencadenante(entity.getTipodesencadenante());
 		model.setDescripcionDesencadenante(entity.getDesencadenante());
 		return model;

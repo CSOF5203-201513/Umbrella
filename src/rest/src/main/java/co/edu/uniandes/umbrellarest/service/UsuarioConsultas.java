@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -18,6 +19,7 @@ import javax.ws.rs.Produces;
 
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 
+import co.edu.uniandes.negocio.EpisodioMigrana;
 import co.edu.uniandes.negocio.Usuario;
 
 public class UsuarioConsultas extends AbstractFacade<Usuario> {
@@ -62,6 +64,23 @@ public class UsuarioConsultas extends AbstractFacade<Usuario> {
 	        return super.findAll();
 	    }
 
+	    
+	    public Usuario getByCedula(String cedula)
+	    {
+	    	TypedQuery<Usuario> query =
+	    	em.createNamedQuery("Usuario.findByNumeroidentificacion", Usuario.class);
+	    	query.setParameter("numeroidentificacion", cedula);
+	    	return query.getSingleResult();
+	    }
+	    
+	    public List<EpisodioMigrana> getEpisodiosByCedula(String cedula)
+	    {
+	    	Usuario usuario = getByCedula(cedula);
+	    	TypedQuery<EpisodioMigrana> query =
+	    	em.createNamedQuery("EpisodioMigrana.findByIdpaciente", EpisodioMigrana.class);
+	    	query.setParameter("idpaciente", usuario.getId()); 	
+	    	return query.getResultList();
+	    }
 	    
 	    public List<Usuario> findRange(Integer from, Integer to) {
 	        return super.findRange(new int[]{from, to});

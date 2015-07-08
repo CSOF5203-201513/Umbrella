@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,7 +18,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import co.edu.uniandes.negocio.DesencadenanteEpisodio;
 import co.edu.uniandes.negocio.Lista;
+import co.edu.uniandes.negocio.ListaValor;
 
 /**
  * @author Erica
@@ -56,11 +59,19 @@ public class ListaFacadeREST extends AbstractFacade<Lista>{
 	        super.remove(super.find(id));
 	    }
 
+	    
+	    public Lista find(@PathParam("id") Integer id) {
+	        return super.find(id);
+	    }
+	    
 	    @GET
 	    @Path("{id}")
 	    @Produces({"application/xml", "application/json"})
-	    public Lista find(@PathParam("id") Integer id) {
-	        return super.find(id);
+	    public List<ListaValor> findByLista(@PathParam("id") Integer id)
+	    {
+	    	TypedQuery<ListaValor> query = getEntityManager().createNamedQuery("ListaValor.findByIdlista", ListaValor.class);
+	    	query.setParameter("idlista", id);
+	    	return query.getResultList();
 	    }
 
 	    @GET
