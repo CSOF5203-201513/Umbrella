@@ -47,12 +47,7 @@
             <version>1.2.3</version>
             <type>jar</type>
         </dependency>
-        <dependency>
-            <groupId>co.edu.uniandes</groupId>
-            <artifactId>negocio</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>
+
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
@@ -60,6 +55,12 @@
             <scope>provided</scope>
         </dependency>
         -->
+        <dependency>
+            <groupId>co.edu.uniandes</groupId>
+            <artifactId>negocio</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
         <dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
