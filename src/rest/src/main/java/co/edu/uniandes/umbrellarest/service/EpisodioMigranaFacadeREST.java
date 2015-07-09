@@ -1,20 +1,18 @@
 package co.edu.uniandes.umbrellarest.service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import org.json.simple.JSONObject;
@@ -135,6 +133,9 @@ public class EpisodioMigranaFacadeREST  {
     	EpisodioMigrana episodio = getEntityManager().find(EpisodioMigrana.class, id);
     	return EpisodioMigranaModel.GetModel(episodio, consultasUsuarios.find(episodio.getIdmedico()), consultasUsuarios.find(episodio.getIdpaciente()), consultasDesencadenantes.getByEpisodioId(episodio.getId()));
     }
+    
+    
+       
 
     @GET
     @Produces({"application/xml", "application/json"})
@@ -148,7 +149,6 @@ public class EpisodioMigranaFacadeREST  {
         	UsuarioConsultas consultasUsuarios = new UsuarioConsultas();
         	DesencadenanteEpisodioConsultas consultasDesencadenantes = new DesencadenanteEpisodioConsultas();
         	EpisodioMigranaModel episodioModel = EpisodioMigranaModel.GetModel(episodio, consultasUsuarios.find(episodio.getIdmedico()), consultasUsuarios.find(episodio.getIdpaciente()), consultasDesencadenantes.getByEpisodioId(episodio.getId()));
-        	System.out.println("---------------------------------------->Mostrar mensaje");
         	models.add(episodioModel);
         }
         return models;
