@@ -1,5 +1,6 @@
 package paciente.android.umbrella.uniandes.edu.co.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
 public class EpisodioMigrana {
     private int id;
     private String fechaCreacion;
-    private int idLocalizacionDolor;
+    private int idlocalizacionDolor;
     private String localizacionDolor;
     private int idIntensidad;
     private String intensidad;
@@ -20,6 +21,11 @@ public class EpisodioMigrana {
     private String medicoNombre;
     private String urlAudio;
     private List<DescripcionEpisodio> desencadenantes;
+
+    public EpisodioMigrana()
+    {
+        desencadenantes = new ArrayList<DescripcionEpisodio>();
+    }
 
     public int getId() {
         return id;
@@ -45,12 +51,12 @@ public class EpisodioMigrana {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public int getIdLocalizacionDolor() {
-        return idLocalizacionDolor;
+    public int getIdlocalizacionDolor() {
+        return idlocalizacionDolor;
     }
 
-    public void setIdLocalizacionDolor(int idLocalizacionDolor) {
-        this.idLocalizacionDolor = idLocalizacionDolor;
+    public void setIdlocalizacionDolor(int idlocalizacionDolor) {
+        this.idlocalizacionDolor = idlocalizacionDolor;
     }
 
     public String getLocalizacionDolor() {
@@ -136,6 +142,6 @@ public class EpisodioMigrana {
     @Override
     public String toString()
     {
-        return "Fecha: "+this.getFechaCreacion() + "\n Dolor:" + this.getLocalizacionDolor();
+        return " ID:"+this.getId() +"\n Dolor:" + this.getLocalizacionDolor()+ "\n Medico:" + this.getMedicoNombre();
     }
 }

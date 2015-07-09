@@ -43,7 +43,7 @@ public class PostEpisodiosMigranaRestTask extends AsyncTask<Void,Void, EpisodioM
 
         try {
 
-            final String url = ctx.getString(R.string.server_api_url) + "episodios";
+            final String url = ctx.getString(R.string.server_api_url) + "episodios" + (episodio.getId() > 0 ? "/"+episodio.getId() : "") ;
 
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());

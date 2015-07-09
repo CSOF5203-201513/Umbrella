@@ -23,6 +23,7 @@ public class MigranaApplication extends Application {
 
     public void setAuthenticatedUser(User authenticatedUser) {
         this.authenticatedUser = authenticatedUser;
+
     }
 
 
