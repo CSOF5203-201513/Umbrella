@@ -60,7 +60,13 @@ public class MedicoService implements MedicoServiceLocal {
 			episodio = new EpisodiosDTO();
 
 			episodio.setIdEpisodio((int) object[0]);
-			episodio.setEstado((int) object[1]);
+
+			int estado = 0;
+			if(object[1] != null){
+				
+				estado = (int) object[1];
+			}
+			episodio.setEstado(estado);
 			episodio.setFechaCreacion((Date) object[2]);
 			episodio.setIntensidad((String) object[3]);
 			episodio.setLocalizacionDolor((String) object[4]);
@@ -102,7 +108,13 @@ public class MedicoService implements MedicoServiceLocal {
 			episodio = new EpisodiosDTO();
 
 			episodio.setIdEpisodio((int) object[0]);
-			episodio.setEstado((int) object[1]);
+			
+			int estado = 0;
+			if(object[1] != null){
+				
+				estado = (int) object[1];
+			}
+			episodio.setEstado(estado);
 			episodio.setFechaCreacion((Date) object[2]);
 			episodio.setIntensidad((String) object[3]);
 			episodio.setLocalizacionDolor((String) object[4]);
