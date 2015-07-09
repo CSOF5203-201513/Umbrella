@@ -8,12 +8,15 @@ package co.edu.uniandes.negocio;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
@@ -42,7 +45,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "EpisodioMigrana.findByIdpaciente", query = "SELECT e FROM EpisodioMigrana e WHERE e.idpaciente = :idpaciente"),
     @NamedQuery(name = "EpisodioMigrana.findBetween", query = "SELECT e FROM EpisodioMigrana e WHERE e.fechacreacion between :fechainicio and :fechafin"),
     @NamedQuery(name = "EpisodioMigrana.findByRutaaudio", query = "SELECT e FROM EpisodioMigrana e WHERE e.rutaaudio = :rutaaudio")})
-
+@NamedNativeQueries({
+	@NamedNativeQuery(name = "EpisodioMigrana.findByNumeroIdentificacion", 
+			query ="select  e.id as idEpisodio, e.estado as estado, e.fechacreacion as fechaCreacion, lv1.descripcion as intensidad, lv2.descripcion as localizacionDolor, u1.nombre as nombrePaciente, u1.numeroidentificacion as identificacionPaciente, u1.id as idPaciente, u2.nombre as medico, u2.id as idMedico from episodio_migrana e, usuario u1, usuario u2,lista_valor lv1, lista l1, lista_valor lv2, lista l2 where e.idpaciente = u1.id and e.idmedico = u2.id and l1.id= lv1.idlista and l2.id= lv2.idlista and e.idintensidad = lv1.id and e.idlocalizaciondolor= lv2.id and u1.numeroidentificacion=? order by e.id"
+			),
+	@NamedNativeQuery(name = "EpisodioMigrana.findByNumeroIdentificacionFechas", 
+			query ="select  e.id as idEpisodio, e.estado as estado, e.fechacreacion as fechaCreacion, lv1.descripcion as intensidad, lv2.descripcion as localizacionDolor, u1.nombre as nombrePaciente, u1.numeroidentificacion as identificacionPaciente, u1.id as idPaciente, u2.nombre as medico, u2.id as idMedico from episodio_migrana e, usuario u1, usuario u2,lista_valor lv1, lista l1, lista_valor lv2, lista l2 where e.idpaciente = u1.id and e.idmedico = u2.id and l1.id= lv1.idlista and l2.id= lv2.idlista and e.idintensidad = lv1.id and e.idlocalizaciondolor= lv2.id and u1.numeroidentificacion=? and e.fechacreacion BETWEEN ? and ? order by e.id"
+			)
+	})
 public class EpisodioMigrana implements Serializable {
 
     private static final long serialVersionUID = 1L;

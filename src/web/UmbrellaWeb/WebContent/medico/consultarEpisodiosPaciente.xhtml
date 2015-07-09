@@ -17,12 +17,12 @@
 		<h:form>
 			<h:messages globalOnly="true" errorClass="err" warnClass="warn" infoClass="info" />
 			
-			<h:outputLabel value="#{msg.labelPpalConsultaEpisodios}" />
+			<p:outputLabel value="#{msg.labelPpalConsultaEpisodios}" />
 
 			<!-- Panel de filtros de consulta -->
 			<h:panelGrid columns="2">
 			
-				<h:outputLabel value="#{msg.labelNroIdentificacion}" />
+				<p:outputLabel value="#{msg.labelNroIdentificacion}" />
 				<h:panelGrid  columns="1">
 					<h:inputText id="field1" 
 						label="#{msg.labelNroIdentificacion}"
@@ -33,7 +33,7 @@
 					<h:message for="field1" ></h:message>
 				</h:panelGrid>
 				
-				<h:outputLabel value="#{msg.labelFechaInicio}" />
+				<p:outputLabel value="#{msg.labelFechaInicio}" />
 				<h:panelGrid  columns="1">
 				<p:calendar id="field2" showOn="button"
 						label="#{msg.labelFechaInicio}"
@@ -42,7 +42,7 @@
 					<h:message for="field2" ></h:message>
 				</h:panelGrid>
 				
-				<h:outputLabel value="#{msg.labelFechaFin}" />
+				<p:outputLabel value="#{msg.labelFechaFin}" />
 				<h:panelGrid  columns="1">
 					<p:calendar id="field3" showOn="button"
 						value="#{consultaEpisodiosPaciente.fechaFin}" 
@@ -54,23 +54,34 @@
 				<h:commandButton   value="#{msg.botonConsulta}"
 					action="#{consultaEpisodiosPaciente.consultarEpisodiosPaciente}" />
 				<h:commandButton   value="#{msg.botonLimpiar}"
-					action="#{consultaEpisodiosPaciente.consultarEpisodiosPaciente}" />
+					action="#{consultaEpisodiosPaciente.limpiar}" />
 			</h:panelGrid>
 			
+			<p:spacer height="30" />
+			<p:outputLabel value="Resultado de la consulta" rendered="#{consultaEpisodiosPaciente.mostrarResultado}"/>
+			<p:spacer height="50" />
 			<!-- Panel de resultados -->
 			<h:panelGrid columns="1" rendered="#{consultaEpisodiosPaciente.mostrarResultado}">
 				<p:dataTable value="#{consultaEpisodiosPaciente.episodios}" var="episodio" rowIndexVar="rowIndex">
 				
-					<p:column headerText="idEpisodio">
+					<p:column headerText="id Episodio">
 				        <h:outputText value="#{episodio.idEpisodio}" />
 				    </p:column>
+				    
+				    <p:column headerText="Nombre paciente">
+				        <h:outputText value="#{episodio.nombrePaciente}" />
+				    </p:column>
 				 
-				    <p:column headerText="fechaCreacion">
+				    <p:column headerText="fecha Creacion">
 				        <h:outputText value="#{episodio.fechaCreacion}" />
 				    </p:column>
 				 
-				    <p:column headerText="localizacionDolor">
+				    <p:column headerText="localizacion Dolor">
 				        <h:outputText value="#{episodio.localizacionDolor}" />
+				    </p:column>
+				    
+				    <p:column headerText="intensidad">
+				        <h:outputText value="#{episodio.intensidad}" />
 				    </p:column>
 				 
 				    <p:column headerText="estado">
@@ -83,21 +94,24 @@
 				    
 				    <p:column headerText="ver detalle">
 						<h:commandLink action="#{consultaEpisodiosPaciente.verDetalle}"
-							
 							value="Ver detalle episodio" >
-							<f:param name="index" value="#{rowIndex}" />
+							  <f:setPropertyActionListener value="#{rowIndex}"
+         						target="#{consultaEpisodiosPaciente.index}" />
 						</h:commandLink>
 				    </p:column>
 				
 				</p:dataTable>
 			</h:panelGrid>
 			
+			<p:spacer height="30" />
+			<p:outputLabel value="Detalle episodio" rendered="#{consultaEpisodiosPaciente.mostrarDetalle}"  />
+			<p:spacer height="50" />
 			<!-- Panel detalle -->
 			<h:panelGrid  columns="1" rendered="#{consultaEpisodiosPaciente.mostrarDetalle}" >
-				<p:dataTable value="#{consultaEpisodiosPaciente.episodio.medicamentos}" var="medicamento">
+				<p:dataTable value="#{consultaEpisodiosPaciente.episodio.catalizadores}" var="catalizador">
 				
-					<p:column headerText="medicamento">
-				        <h:outputText value="#{medicamento}" />
+					<p:column headerText="catalizadores">
+				        <h:outputText value="#{catalizador}" />
 				    </p:column>
 				    
 				</p:dataTable>
