@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE glassfish-web-app PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN" "http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd">
 <glassfish-web-app error-url="">
-<<<<<<< HEAD
-  <context-root>/web</context-root>
-=======
   <context-root>/UmbrellaWeb</context-root>
->>>>>>> 8c5f2acb35229a8aed7b119eb9e57030850de306
 </glassfish-web-app>
