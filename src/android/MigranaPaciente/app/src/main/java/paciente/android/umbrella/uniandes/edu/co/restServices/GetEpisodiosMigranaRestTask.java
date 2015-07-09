@@ -47,10 +47,12 @@ public class GetEpisodiosMigranaRestTask extends AsyncTask<Void,Void, List<Episo
             String url = "";
             MigranaApplication app = (MigranaApplication) ctx.getApplicationContext();
 
-            if(filtroIdEpisodio > 0)
-                url = ctx.getString(R.string.server_api_url) + "episodios/" + filtroIdEpisodio;
-            else
-                url = ctx.getString(R.string.server_api_url) + "usuarios/" + app.getAuthenticatedUser().getIdentification() + "/episodios";
+//            if(filtroIdEpisodio > 0)
+//                url = ctx.getString(R.string.server_api_url) + "episodios/" + filtroIdEpisodio;
+//            else
+//                url = ctx.getString(R.string.server_api_url) + "usuarios/" + app.getAuthenticatedUser().getIdentification() + "/episodios";
+
+            url = ctx.getString(R.string.server_api_url) + "episodios";
 
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());

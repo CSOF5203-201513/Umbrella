@@ -33,6 +33,7 @@ import java.util.concurrent.ExecutionException;
 
 import paciente.android.umbrella.uniandes.edu.co.aplications.MigranaApplication;
 import paciente.android.umbrella.uniandes.edu.co.entities.*;
+import paciente.android.umbrella.uniandes.edu.co.restServices.GetCatalizadoresRestTask;
 import paciente.android.umbrella.uniandes.edu.co.restServices.GetEpisodiosMigranaRestTask;
 import paciente.android.umbrella.uniandes.edu.co.restServices.PostAudioEpisodioMigranaRestTask;
 import paciente.android.umbrella.uniandes.edu.co.restServices.PostEpisodiosMigranaRestTask;
@@ -338,6 +339,12 @@ public class EpisodioMigranaDetailFragment extends Fragment {
                              mItem.setUrlAudio(postAudio.execute().get());
                          }
 
+//                         List<Catalizador> catalizadores = new GetCatalizadoresRestTask(getActivity(), idEpisodio).execute().get();
+//                         String strCatalizadores = "Los Catalizadores encontrados para su caso eson:";
+//                         for (Catalizador catalizador : catalizadores)
+//                         {
+//                             strCatalizadores += catalizador.getNombre() + " ";
+//                         }
 
                          new AlertDialog.Builder(getActivity())
                                  .setTitle("Operación exitosa")

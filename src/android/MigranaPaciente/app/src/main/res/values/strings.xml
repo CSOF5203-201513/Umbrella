@@ -2,7 +2,7 @@
     <string name="app_name">UMigraña Paciente</string>
     <!--<string name="server_api_url">http://10.0.2.2/MigranaRest/</string>-->
     <!--<string name="server_api_url">http://apiecos.azurewebsites.net/</string>-->
-    <string name="server_api_url">http://10.0.2.2:8080/rest/webresources/</string>
+    <string name="server_api_url">https://migrana.umbrellatm.tk/rest/webresources/</string>
    <string name="title_episodio_list">Episodios</string>
    <string name="title_episodio_detail">Detalle de su migraña</string>
    <string name="title_episodiomigrana_list">Todos mis episodios</string>
