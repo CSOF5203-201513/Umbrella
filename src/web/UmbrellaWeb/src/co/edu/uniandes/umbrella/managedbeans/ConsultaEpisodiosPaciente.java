@@ -64,8 +64,7 @@ public class ConsultaEpisodiosPaciente {
 
 		if (fechaInicio != null && fechaFin != null) {
 
-			episodios = medicoService.consultarPacientePeriodoTiempo(
-					nroIdentificacion, fechaInicio, fechaFin);
+			episodios = medicoService.consultarPacientePeriodoTiempo(nroIdentificacion, fechaInicio, fechaFin);
 
 		} else {
 
