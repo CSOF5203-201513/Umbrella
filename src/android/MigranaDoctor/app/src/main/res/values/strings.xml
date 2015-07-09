@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">MigranaDoctor</string>
+
+    <string name="nombreAplicacion">Migrania DOCTOR</string>
+    <string name="action_settings">Settings</string>
+    <string name="titulo">Aplicación DOCTOR</string>
+    <string name="boton1">Listar episodios de migrania</string>
+    <string name="boton2">Consultar episodios paciente</string>
+    <string name="boton3">Consultar</string>
+    <string name="boton4">Consultar episodios por fecha</string>
+    <string name="title_activity_episodios_paciente">episodiosPaciente</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_descripcion_episodio">DescripcionEpisodio</string>
+    <string name="title_activity_episodio_paciente_xcedula">episodioPacienteXCedula</string>
+    <string name="title_activity_episodio_paciente_xfecha">EpisodioPacienteXFecha</string>
+</resources>
