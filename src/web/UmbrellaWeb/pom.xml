@@ -37,11 +37,12 @@
   </build>
   <dependencies>
         <!--   Stormpath   -->
-         <dependency>
+        <!--
+        <dependency>
                 <groupId>com.stormpath.shiro</groupId>
                 <artifactId>stormpath-shiro-core</artifactId>
                 <version>0.6.0</version>
-         </dependency>
+        </dependency>
  
         <dependency>
             <groupId>com.stormpath.sdk</groupId>
@@ -56,13 +57,16 @@
             <version>1.0.RC2</version>
             <scope>runtime</scope>
         </dependency> 
+        -->
         <!-- Shiro -->
+        <!--
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-web</artifactId>
             <version>1.2.3</version>
             <type>jar</type>
         </dependency>
+        -->
   <!-- Faces -->
   	<dependency>
 		<groupId>com.sun.faces</groupId>

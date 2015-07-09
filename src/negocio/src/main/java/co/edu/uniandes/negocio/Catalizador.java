@@ -28,7 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Catalizador.findAll", query = "SELECT c FROM Catalizador c"),
     @NamedQuery(name = "Catalizador.findById", query = "SELECT c FROM Catalizador c WHERE c.id = :id"),
     @NamedQuery(name = "Catalizador.findByNombre", query = "SELECT c FROM Catalizador c WHERE c.nombre = :nombre"),
-    @NamedQuery(name = "Catalizador.findByTipo", query = "SELECT c FROM Catalizador c WHERE c.tipo = :tipo")})
+    @NamedQuery(name = "Catalizador.findByTipo", query = "SELECT c FROM Catalizador c WHERE c.tipo = :tipo"),
+	@NamedQuery(name = "Catalizador.findByNombreTipo", query = "SELECT c FROM Catalizador c WHERE c.tipo = :tipo AND c.nombre = :nombre")})
 public class Catalizador implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

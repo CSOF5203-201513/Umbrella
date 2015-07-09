@@ -15,8 +15,10 @@
     </properties>
     
     <dependencies>
+        
         <!--   Stormpath   -->
-         <dependency>
+        <!--
+        <dependency>
                 <groupId>com.stormpath.shiro</groupId>
                 <artifactId>stormpath-shiro-core</artifactId>
                 <version>0.6.0</version>
@@ -34,27 +36,31 @@
             <artifactId>stormpath-sdk-httpclient</artifactId>
             <version>1.0.RC2</version>
             <scope>runtime</scope>
-        </dependency> 
+        </dependency>
+        -->
+         
         <!-- Shiro -->
+        <!--
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-web</artifactId>
             <version>1.2.3</version>
             <type>jar</type>
         </dependency>
-        <dependency>
-            <groupId>co.edu.uniandes</groupId>
-            <artifactId>negocio</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>
+
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
-        
+        -->
+        <dependency>
+            <groupId>co.edu.uniandes</groupId>
+            <artifactId>negocio</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
         <dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
@@ -66,6 +72,18 @@
 			<artifactId>json-simple</artifactId>
 			<version>1.1</version>
 		</dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>1.0-rev-1</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.0.1</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>

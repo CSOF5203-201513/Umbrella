@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <h:head>
+    
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+              
+<f:loadBundle basename="main.resources.application" var="msg"/>
+        <title>Umbrella - </title>
+    </h:head>
+    <h:body>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Please Sign In</h3>
+                        </div>
+                        
+                        <h:messages style="color:red;margin:8px;"></h:messages>
+                        <div class="panel-body">
+                            <h:form id="login">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <h:outputLabel value="#{msg.labelUsuario}" for="username"/>
+                                        <h:inputText required="true" id="username"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <h:outputLabel value="#{msg.labelPassword}" for="password"/>
+                                        <h:inputSecret id="password" required="true"/>
+                                    </div>
+                                
+                                    <!-- Change this to a button or input when using this as a form -->
+                                    <h:commandButton  action="goto" value="Login">
+                                        <f:attribute name="enviar" value="#{msg.botonLogin}"/>
+                                    </h:commandButton>
+                                </fieldset>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
