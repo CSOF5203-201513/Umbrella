@@ -39,6 +39,11 @@ public class GetEpisodiosMigranaRestTask extends AsyncTask<Void,Void, List<Episo
         this.filtroIdEpisodio = filtroIdEpisodio;
     }
 
+    private EpisodioMigrana episodioMigrana;
+    public  EpisodioMigrana getEpisodioMigrana()
+    {
+        return episodioMigrana;
+    }
 
     @Override
     protected List<EpisodioMigrana> doInBackground(Void... params) {
@@ -52,6 +57,8 @@ public class GetEpisodiosMigranaRestTask extends AsyncTask<Void,Void, List<Episo
             else
                 url = ctx.getString(R.string.server_api_url) + "usuarios/" + app.getAuthenticatedUser().getIdentification() + "/episodios";
 
+//            url = ctx.getString(R.string.server_api_url) + "episodios";
+
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
@@ -62,13 +69,16 @@ public class GetEpisodiosMigranaRestTask extends AsyncTask<Void,Void, List<Episo
             if(filtroIdEpisodio > 0)
             {
                 EpisodioMigrana episodio = restTemplate.exchange(url, HttpMethod.GET, null, EpisodioMigrana.class).getBody();
-                ArrayList<EpisodioMigrana> episodios = new ArrayList<EpisodioMigrana>();
-                episodios.add(episodio);
-                return episodios;
+                episodioMigrana = episodio;
+                return null;
+//                ArrayList<EpisodioMigrana> episodios = new ArrayList<EpisodioMigrana>();
+//                episodios.add(episodio);
+//                return episodios;
             }
             else
             {
                 //realiza el llamado
+              // HttpEntity<EpisodioMigrana> entity = new HttpEntity<EpisodioMigrana>(headers);
                 EpisodioMigrana[] episodios = restTemplate.exchange(url, HttpMethod.GET, null, EpisodioMigrana[].class).getBody();
                 return new ArrayList<EpisodioMigrana>(Arrays.asList(episodios)) ;
             }

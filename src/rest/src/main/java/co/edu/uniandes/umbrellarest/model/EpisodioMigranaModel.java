@@ -6,7 +6,9 @@ import java.util.List;
 
 import co.edu.uniandes.negocio.DesencadenanteEpisodio;
 import co.edu.uniandes.negocio.EpisodioMigrana;
+import co.edu.uniandes.negocio.ListaValor;
 import co.edu.uniandes.negocio.Usuario;
+import co.edu.uniandes.umbrellarest.service.ListaValorConsultas;
 
 public class EpisodioMigranaModel {
 	
@@ -25,8 +27,14 @@ public class EpisodioMigranaModel {
 	public static EpisodioMigranaModel GetModel(EpisodioMigrana entity, Usuario medico, Usuario paciente, List<DesencadenanteEpisodio> desencadenantes)
 	{
 		EpisodioMigranaModel model = new EpisodioMigranaModel();
+		ListaValorConsultas listaValor = new ListaValorConsultas();
+		
 		model.setIdIntensidad(entity.getIdintensidad());
+		model.setIntensidad(((ListaValor)listaValor.getById(entity.getIdintensidad())).getDescripcion());
+		
 		model.setIdlocalizacionDolor(entity.getIdlocalizaciondolor());
+		model.setLocalizacionDolor(((ListaValor)listaValor.getById(entity.getIdlocalizaciondolor())).getDescripcion());
+		
 		model.setIdMedico(entity.getIdmedico() );
 		model.setIdPaciente(entity.getIdpaciente());
 		model.setId(entity.getId());

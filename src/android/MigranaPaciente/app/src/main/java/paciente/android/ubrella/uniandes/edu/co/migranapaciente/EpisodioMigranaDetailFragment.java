@@ -33,6 +33,7 @@ import java.util.concurrent.ExecutionException;
 
 import paciente.android.umbrella.uniandes.edu.co.aplications.MigranaApplication;
 import paciente.android.umbrella.uniandes.edu.co.entities.*;
+import paciente.android.umbrella.uniandes.edu.co.restServices.GetCatalizadoresRestTask;
 import paciente.android.umbrella.uniandes.edu.co.restServices.GetEpisodiosMigranaRestTask;
 import paciente.android.umbrella.uniandes.edu.co.restServices.PostAudioEpisodioMigranaRestTask;
 import paciente.android.umbrella.uniandes.edu.co.restServices.PostEpisodiosMigranaRestTask;
@@ -87,12 +88,13 @@ public class EpisodioMigranaDetailFragment extends Fragment {
             {
                 GetEpisodiosMigranaRestTask restEpisodios = new GetEpisodiosMigranaRestTask(getActivity(), idEpisodioSeleccionado );
                 try {
-                    List<EpisodioMigrana> episodios = restEpisodios.execute().get();
-                    if(episodios != null && episodios.size() > 0)
-                        mItem = episodios.get(0);
-                    else
-                        mItem = new EpisodioMigrana();
-
+                    //List<EpisodioMigrana> episodios = restEpisodios.execute().get();
+//                    if(episodios != null && episodios.size() > 0)
+//                        mItem = episodios.get(0);
+//                    else
+//                        mItem = new EpisodioMigrana();
+                    restEpisodios.execute().get();
+                    mItem = restEpisodios.getEpisodioMigrana();
                 } catch (InterruptedException e) {
                     //TODO: Mostrar execopcion
                     e.printStackTrace();
@@ -129,7 +131,7 @@ public class EpisodioMigranaDetailFragment extends Fragment {
             ((TextView) rootView.findViewById(R.id.episodiomigrana_fecha)).setText(mItem.getFechaCreacion());
             ((TextView) rootView.findViewById(R.id.episodiomigrana_medico_nombre)).setText(mItem.getMedicoNombre());
 
-            ddlLocalizaciones.setSelection(getIndexListaValor(application.getLocalizacionesDolor(getActivity()), mItem.getIdLocalizacionDolor()));
+            ddlLocalizaciones.setSelection(getIndexListaValor(application.getLocalizacionesDolor(getActivity()), mItem.getIdlocalizacionDolor()));
             ddlIntensidad.setSelection(getIndexListaValor(application.getIntensidades(getActivity()), mItem.getIdIntensidad()));
         }
 
@@ -164,11 +166,12 @@ public class EpisodioMigranaDetailFragment extends Fragment {
 
         try {
             mRecorder.prepare();
-        } catch (IOException e) {
+            mRecorder.start();
+        } catch (Exception e) {
             Log.e("GuardarAudio", "prepare() failed");
         }
 
-        mRecorder.start();
+
     }
 
     private void stopRecording() {
@@ -317,9 +320,12 @@ public class EpisodioMigranaDetailFragment extends Fragment {
                  if (idEpisodio > 0)
                      episodio.setId(idEpisodio);
 
-                 episodio.setIdLocalizacionDolor(((ListaValor) ((Spinner) getActivity().findViewById(R.id.episodiomigrana_ddlLocalizacionDolor)).getSelectedItem()).getId());
+                 episodio.setIdlocalizacionDolor(((ListaValor) ((Spinner) getActivity().findViewById(R.id.episodiomigrana_ddlLocalizacionDolor)).getSelectedItem()).getId());
                  episodio.setIdIntensidad(((ListaValor) ((Spinner) getActivity().findViewById(R.id.episodiomigrana_ddlIntensidad)).getSelectedItem()).getId());
                  episodio.setDesencadenantes(getDescripcionesEpisodio());
+                 episodio.setIdPaciente(application.getAuthenticatedUser().getId());
+
+                 episodio.setIdMedico(1);
                  //episodio.setIdPaciente(application.getAuthenticatedUser().getId());
 
                  PostEpisodiosMigranaRestTask postTask = new PostEpisodiosMigranaRestTask(getActivity(), episodio);
@@ -339,9 +345,21 @@ public class EpisodioMigranaDetailFragment extends Fragment {
                          }
 
 
+                         List<Catalizador> catalizadores = new GetCatalizadoresRestTask(getActivity(), idEpisodio).execute().get();
+                         String strCatalizadores = "";
+                         if(catalizadores != null && catalizadores.size() > 0)
+                         {
+                             strCatalizadores = "Los Catalizadores encontrados para su caso son:";
+                             for (Catalizador catalizador : catalizadores)
+                             {
+                                 strCatalizadores += catalizador.getNombre() + ", ";
+                             }
+                         }
+
+
                          new AlertDialog.Builder(getActivity())
                                  .setTitle("Operación exitosa")
-                                 .setMessage("El registro ha sido guardado correctamente")
+                                 .setMessage("El registro ha sido guardado correctamente. " + strCatalizadores)
                                  .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                      public void onClick(DialogInterface dialog, int wich) {
                                          getActivity().finish();
@@ -365,6 +383,9 @@ public class EpisodioMigranaDetailFragment extends Fragment {
          });
 
      }
+
+
+
     private List<DescripcionEpisodio> getDescripcionesEpisodio() {
         LinearLayout tableDescripciones = (LinearLayout)getActivity().findViewById(R.id.episodiomigrana_trDesencadenantes);
         MigranaApplication application = (MigranaApplication)getActivity().getApplication();

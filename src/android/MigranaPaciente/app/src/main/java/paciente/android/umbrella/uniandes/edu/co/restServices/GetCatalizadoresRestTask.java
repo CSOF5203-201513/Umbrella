@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -13,62 +12,55 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import paciente.android.ubrella.uniandes.edu.co.migranapaciente.R;
+import paciente.android.umbrella.uniandes.edu.co.aplications.MigranaApplication;
+import paciente.android.umbrella.uniandes.edu.co.entities.Catalizador;
 import paciente.android.umbrella.uniandes.edu.co.entities.EpisodioMigrana;
-import paciente.android.umbrella.uniandes.edu.co.entities.User;
-
 
 /**
- * Created by Gabriel on 01/07/2015.
+ * Created by Gabriel on 08/07/2015.
  */
-public class PostEpisodiosMigranaRestTask extends AsyncTask<Void,Void, EpisodioMigrana> {
+public class GetCatalizadoresRestTask extends AsyncTask<Void,Void, List<Catalizador>> {
+
 
     private Context ctx;
-    public PostEpisodiosMigranaRestTask(Context ctx)
+    private int filtroIdEpisodio;
+
+    public GetCatalizadoresRestTask(Context ctx)
     {
         this.ctx = ctx;
     }
 
-    private EpisodioMigrana episodio;
-
-    public PostEpisodiosMigranaRestTask(Context ctx, EpisodioMigrana episodio)
+    public GetCatalizadoresRestTask(Context ctx, int filtroIdEpisodio)
     {
         this.ctx = ctx;
-        this.episodio = episodio;
+        this.filtroIdEpisodio = filtroIdEpisodio;
     }
+
 
     @Override
-    protected EpisodioMigrana doInBackground(Void... params) {
-
+    protected List<Catalizador> doInBackground(Void... params) {
         try {
 
-            final String url = ctx.getString(R.string.server_api_url) + "episodios" + (episodio.getId() > 0 ? "/"+episodio.getId() : "") ;
+            String url = ctx.getString(R.string.server_api_url) + "catalizadores/" + filtroIdEpisodio;;
+            MigranaApplication app = (MigranaApplication) ctx.getApplicationContext();
 
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-
 
             //Agrega los headers para hacer un llamado por JSON
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
-            HttpEntity<EpisodioMigrana> entity = new HttpEntity<EpisodioMigrana>(episodio, headers);
-
-            //Cuando es para edici�n env�a un put
-            if(episodio.getId() > 0)
-                return restTemplate.exchange(url, HttpMethod.PUT, entity, EpisodioMigrana.class).getBody();
-            else
-                return restTemplate.exchange(url, HttpMethod.POST, entity, EpisodioMigrana.class).getBody();
-
+            Catalizador[] catalizadores = restTemplate.exchange(url, HttpMethod.GET, null, Catalizador[].class).getBody();
+            return new ArrayList<Catalizador>(Arrays.asList(catalizadores)) ;
 
         } catch (Exception e) {
-            Log.e("PostEpisodiosRestTask", e.getMessage(), e);
+            Log.e("EspisodioMigranaRest", e.getMessage(), e);
             System.out.println(e.getMessage());
-            return  null;
+            return  new ArrayList<Catalizador>();
         }
-
-
     }
 }
-

@@ -3,15 +3,16 @@
  */
 package co.edu.uniandes.umbrellarest.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -21,7 +22,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import co.edu.uniandes.negocio.DesencadenanteEpisodio;
 import co.edu.uniandes.negocio.EpisodioMigrana;
 import co.edu.uniandes.negocio.Usuario;
 import co.edu.uniandes.umbrellarest.model.EpisodioMigranaModel;
@@ -81,33 +81,43 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario>{
 	        return models;
 	    }
 	    
-//	    @GET
-//	    @Path("{cedula}/episodios/{fechaInicio}/{fechaFin}")
-//	    @Produces({"application/xml", "application/json"})
-//	    public List<EpisodioMigranaModel> getBetween(@PathParam("cedula") String cedula, @PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin)
-//	    {
-//	    	
-//	    	
-//	    	UsuarioConsultas usuariosConsultas = new UsuarioConsultas();
-//	    	
-//	    	LocalDate ltFechaInicio = convertStringToLocalTime(fechaInicio);
-//	    	LocalDate ltFechaFin = convertStringToLocalTime(fechaFin);
-//	    	
-//	    	List<EpisodioMigrana> entities = usuariosConsultas.getEpisodiosBetween(cedula, ltFechaInicio, ltFechaFin);
-//	    	
-//	    	
-//	    	
-//	    	List<EpisodioMigranaModel> models = new  ArrayList<EpisodioMigranaModel>(); 
-//	        for(EpisodioMigrana episodio : entities)
-//	        {
-//	        	UsuarioConsultas consultasUsuarios = new UsuarioConsultas();
-//	        	DesencadenanteEpisodioConsultas consultasDesencadenantes = new DesencadenanteEpisodioConsultas();
-//	        	EpisodioMigranaModel episodioModel = EpisodioMigranaModel.GetModel(episodio, consultasUsuarios.find(episodio.getIdmedico()), consultasUsuarios.find(episodio.getIdpaciente()), consultasDesencadenantes.getByEpisodioId(episodio.getId()));
-//	        	System.out.println("---------------------------------------->Mostrar mensaje");
-//	        	models.add(episodioModel);
-//	        }
-//	        return models;
-//	    }
+	    @GET
+	    @Path("{cedula}/episodios/{fechaInicio}/{fechaFin}")
+	    @Produces({"application/xml", "application/json"})
+	    public List<EpisodioMigranaModel> getBetween(@PathParam("cedula") String cedula, @PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin)
+	    {    	
+	    	
+	    	UsuarioConsultas usuariosConsultas = new UsuarioConsultas();
+	    	
+	    	DateFormat formatter;
+	        formatter = new SimpleDateFormat("yyyy-MM-dd");
+	        
+	        Date fechaI = new Date();
+	        Date fechaF = new Date();
+	        
+	        
+	        try {				
+	        	fechaI = formatter.parse(fechaInicio);		        
+	        	fechaF = formatter.parse(fechaFin);
+		        
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	         	    	
+	        
+	    	List<EpisodioMigrana> entities = usuariosConsultas.getEpisodiosBetween(cedula, fechaI, fechaF);
+	    		    	
+	    	
+	    	List<EpisodioMigranaModel> models = new  ArrayList<EpisodioMigranaModel>(); 
+	        for(EpisodioMigrana episodio : entities)
+	        {
+	        	UsuarioConsultas consultasUsuarios = new UsuarioConsultas();
+	        	DesencadenanteEpisodioConsultas consultasDesencadenantes = new DesencadenanteEpisodioConsultas();
+	        	EpisodioMigranaModel episodioModel = EpisodioMigranaModel.GetModel(episodio, consultasUsuarios.find(episodio.getIdmedico()), consultasUsuarios.find(episodio.getIdpaciente()), consultasDesencadenantes.getByEpisodioId(episodio.getId()));	        	
+	        	models.add(episodioModel);
+	        }
+	        return models;
+	    }
 	    
 	    public static LocalDate convertStringToLocalTime(String date)
 	    {

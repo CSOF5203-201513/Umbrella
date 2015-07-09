@@ -81,7 +81,7 @@ public class EpisodioMigranaListFragment extends ListFragment {
 
         GetEpisodiosMigranaRestTask restEpisodios = new GetEpisodiosMigranaRestTask(getActivity());
 
-        //Consulta los episodios de migraña por el servicio rest
+        //Consulta los episodios de migrana por el servicio rest
         try {
             this.listData = restEpisodios.execute().get();
 

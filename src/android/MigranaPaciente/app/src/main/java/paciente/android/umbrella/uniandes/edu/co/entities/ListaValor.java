@@ -5,8 +5,17 @@ package paciente.android.umbrella.uniandes.edu.co.entities;
  */
 public class ListaValor {
     private int id;
+    private int idlista;
     private String valor;
     private String descripcion;
+
+    public int getIdlista() {
+        return idlista;
+    }
+
+    public void setIdlista(int idlista) {
+        this.idlista = idlista;
+    }
 
     public int getId() {
         return id;
