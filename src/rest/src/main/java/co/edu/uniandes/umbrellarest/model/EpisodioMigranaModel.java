@@ -20,6 +20,7 @@ public class EpisodioMigranaModel {
 	  entity.setIdlocalizaciondolor(model.getIdlocalizacionDolor());
 	  entity.setIdmedico(model.getIdMedico() );
 	  entity.setIdpaciente(model.getIdPaciente());
+	  entity.setEstado(1);
 	  entity.setId(model.getId());
 	  return entity;
 	}
