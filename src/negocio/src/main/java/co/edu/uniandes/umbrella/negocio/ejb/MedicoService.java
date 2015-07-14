@@ -61,12 +61,12 @@ public class MedicoService implements MedicoServiceLocal {
 
 			episodio.setIdEpisodio((int) object[0]);
 
-			int estado = 0;
-			if(object[1] != null){
-				
-				estado = (int) object[1];
-			}
-			episodio.setEstado(estado);
+//			int estado = 0;
+//			if (object[1] != null) {
+//
+//				estado = (int) object[1];
+//			}
+			episodio.setEstado(7);
 			episodio.setFechaCreacion((Date) object[2]);
 			episodio.setIntensidad((String) object[3]);
 			episodio.setLocalizacionDolor((String) object[4]);
@@ -108,13 +108,13 @@ public class MedicoService implements MedicoServiceLocal {
 			episodio = new EpisodiosDTO();
 
 			episodio.setIdEpisodio((int) object[0]);
-			
-			int estado = 0;
-			if(object[1] != null){
-				
-				estado = (int) object[1];
-			}
-			episodio.setEstado(estado);
+
+//			int estado = 0;
+//			if (object[1] != null) {
+//
+//				estado = (int) object[1];
+//			}
+			episodio.setEstado(7);
 			episodio.setFechaCreacion((Date) object[2]);
 			episodio.setIntensidad((String) object[3]);
 			episodio.setLocalizacionDolor((String) object[4]);
@@ -141,23 +141,43 @@ public class MedicoService implements MedicoServiceLocal {
 		em = factory.createEntityManager();
 
 		Query q = em.createNamedQuery(
-				"DesencadenanteEpisodio.findByIdepisodiomigrana", DesencadenanteEpisodio.class).setParameter(
-				"idepisodiomigrana", idEpisodio);
+				"DesencadenanteEpisodio.findByIdepisodiomigrana",
+				DesencadenanteEpisodio.class).setParameter("idepisodiomigrana",
+				idEpisodio);
 
 		List<DesencadenanteEpisodio> results = q.getResultList();
-		System.out.println(results.size() + "rr");
+		System.out.println(results.size() + " desencadenantes");
 
 		DetalleEpisodioDTO detalleEpisodioDTO = new DetalleEpisodioDTO();
 		List<String> catalizadores = new ArrayList<String>();
-		
+		List<String> sintomas = new ArrayList<String>();
+		List<String> medicamentos = new ArrayList<String>();
+
 		for (DesencadenanteEpisodio desencadenanteEpisodio : results) {
 
-			System.out.println(desencadenanteEpisodio.getId());
-			catalizadores.add(desencadenanteEpisodio.getId() + "");
+			if (desencadenanteEpisodio.getTipodesencadenante() == 7
+					|| desencadenanteEpisodio.getTipodesencadenante() == 8
+					|| desencadenanteEpisodio.getTipodesencadenante() == 9) {
+
+				catalizadores.add(desencadenanteEpisodio.getDesencadenante());
+				System.out.println(desencadenanteEpisodio.getDesencadenante());
+
+			} else if (desencadenanteEpisodio.getTipodesencadenante() == 11) {
+
+				medicamentos.add(desencadenanteEpisodio.getDesencadenante());
+				System.out.println(desencadenanteEpisodio.getDesencadenante());
+
+			} else if (desencadenanteEpisodio.getTipodesencadenante() == 10) {
+
+				sintomas.add(desencadenanteEpisodio.getDesencadenante());
+				System.out.println(desencadenanteEpisodio.getDesencadenante());
+			}
+
 		}
 
-		System.out.println(catalizadores.size() + "size");
 		detalleEpisodioDTO.setCatalizadores(catalizadores);
+		detalleEpisodioDTO.setMedicamentos(medicamentos);
+		detalleEpisodioDTO.setSintomas(sintomas);
 
 		System.out.println("episodio consultado " + idEpisodio);
 

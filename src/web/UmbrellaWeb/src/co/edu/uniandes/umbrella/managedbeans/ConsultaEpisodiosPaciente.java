@@ -56,7 +56,7 @@ public class ConsultaEpisodiosPaciente {
 	}
 
 	public String consultarEpisodiosPaciente() {
-		
+
 		mostrarResultado = false;
 		mostrarDetalle = false;
 
@@ -64,7 +64,8 @@ public class ConsultaEpisodiosPaciente {
 
 		if (fechaInicio != null && fechaFin != null) {
 
-			episodios = medicoService.consultarPacientePeriodoTiempo(nroIdentificacion, fechaInicio, fechaFin);
+			episodios = medicoService.consultarPacientePeriodoTiempo(
+					nroIdentificacion, fechaInicio, fechaFin);
 
 		} else {
 
@@ -83,6 +84,9 @@ public class ConsultaEpisodiosPaciente {
 				.consultarEpisodioPorId(episodio.getIdEpisodio());
 
 		episodio.setCatalizadores(detalle.getCatalizadores());
+		episodio.setMedicamentos(detalle.getMedicamentos());
+		episodio.setSintomas(detalle.getSintomas());
+		
 		mostrarDetalle = true;
 
 		return "";

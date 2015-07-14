@@ -107,11 +107,27 @@
 			<p:outputLabel value="Detalle episodio" rendered="#{consultaEpisodiosPaciente.mostrarDetalle}"  />
 			<p:spacer height="50" />
 			<!-- Panel detalle -->
-			<h:panelGrid  columns="1" rendered="#{consultaEpisodiosPaciente.mostrarDetalle}" >
+			<h:panelGrid  columns="3" rendered="#{consultaEpisodiosPaciente.mostrarDetalle}" >
 				<p:dataTable value="#{consultaEpisodiosPaciente.episodio.catalizadores}" var="catalizador">
 				
-					<p:column headerText="catalizadores">
+					<p:column headerText="Catalizadores">
 				        <h:outputText value="#{catalizador}" />
+				    </p:column>
+				    
+				</p:dataTable>
+				
+				<p:dataTable value="#{consultaEpisodiosPaciente.episodio.medicamentos}" var="medicamento">
+				
+					<p:column headerText="Medicamentos">
+				        <h:outputText value="#{medicamento}" />
+				    </p:column>
+				    
+				</p:dataTable>
+				
+				<p:dataTable value="#{consultaEpisodiosPaciente.episodio.sintomas}" var="sintoma">
+				
+					<p:column headerText="Sintomas">
+				        <h:outputText value="#{sintoma}" />
 				    </p:column>
 				    
 				</p:dataTable>
